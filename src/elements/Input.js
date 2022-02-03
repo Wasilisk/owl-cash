@@ -1,12 +1,58 @@
 import styled from "styled-components";
+import React from "react";
+import ErrorMessage from "./ErrorMessage";
+import Flex from "./Flex";
 
 const InputContainer = styled.div`
   position: relative;
+  
+  & > input {
+    width: 400px;
+    height: 48px;
+    position: relative;
+    border: ${({error}) => error ? "2px solid rgba(217, 56, 85, 1)" : "2px solid #3D4554"};
+    box-sizing: border-box;
+    border-radius: 24px;
+    flex: none;
+    order: 2;
+    align-self: stretch;
+    flex-grow: 0;
+    margin: 16px 0px 5px;
+    background: none;
+    padding-left: 15px;
+
+    /*Input text*/
+    font-family: Rubik, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    &:focus {
+      outline: none;
+      border: ${({error}) => error ? "2px solid rgba(217, 56, 85, 1)" : "2px solid rgba(244, 192, 56, 1)"};
+    }
+
+    &:-webkit-autofill {
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: white !important;
+    }
+    
+    &:focus ~ label {
+      bottom: 42px;
+      color: ${({error}) => error ? "rgba(217, 56, 85, 1)" : "rgba(244, 192, 56, 1)"};
+    }
+
+    &:valid ~ label {
+      bottom: 42px;
+    }
+  }
+  
   & > label {
-    bottom: 30px;
+    bottom: 20px;
     left: 15px;
     position: absolute;
-    color: rgba(255, 255, 255, 0.5);
+    color: ${({error}) => error ? "rgba(217, 56, 85, 1)" : "rgba(255, 255, 255, 0.5)"};
     background-color: #272E3B;
     padding: 0px 5px 0px 5px;
     font-size: 1.1em;
@@ -15,49 +61,16 @@ const InputContainer = styled.div`
   }
 `
 
-const InputElement = styled.input`
-  width: 400px;
-  height: 48px;
-  position: relative;
-  border: 2px solid #3D4554;
-  box-sizing: border-box;
-  border-radius: 24px;
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
-  margin: 16px 0px;
-  background: none;
-  padding-left: 15px;
-
-  /*Input text*/
-  font-family: Rubik, sans-serif;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 24px;
-  color: #FFFFFF;
-
-  &:focus {
-    outline: 2px solid rgba(244, 192, 56, 1);
-  }
-
-  &:focus ~ label {
-    bottom: 55px;
-    color: rgba(244, 192, 56, 1);
-  }
-
-  &:valid ~ label {
-    bottom: 55px;
-  }
-`
-const Input = ({label}, props) => {
+const Input = React.forwardRef(({label, error, ...props}, ref) => {
     return (
-        <InputContainer>
-            <InputElement type="text" id="usr" {...props} required/>
-            <label for="usr">{label}</label>
-        </InputContainer>
+        <Flex alignItems="start">
+            <InputContainer error={error}>
+                <input ref={ref} {...props} required/>
+                <label>{label}</label>
+            </InputContainer>
+            <ErrorMessage>{error?.message}</ErrorMessage>
+        </Flex>
     )
-}
+})
 
 export default Input;
