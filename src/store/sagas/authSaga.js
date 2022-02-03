@@ -6,13 +6,14 @@ import {
     USER_REGISTRATION_SUCCESS,
     USER_LOGIN_SUCCESS,
     USER_LOGIN,
-    USER_REGISTRATION, UPDATE_PASSWORD
+    USER_REGISTRATION, UPDATE_PASSWORD, USER_AUTH_LOADING
 } from "../actions/authActions";
 import {errorNotification, successNotification} from "../../helpers/notifications";
 
 
 function* userRegistration({email, password}) {
     try {
+        yield put({type: USER_AUTH_LOADING})
         const authData = yield authApi.registration(email, password);
         if (authData.status >= 200 && authData.status < 300) {
             yield put({type: USER_REGISTRATION_SUCCESS});
@@ -27,10 +28,11 @@ function* userRegistration({email, password}) {
 
 function* userLogin({email, password}) {
     try {
+        yield put({type: USER_AUTH_LOADING})
         const authData = yield authApi.login(email, password);
         if (authData.status >= 200 && authData.status < 300) {
             Cookies.set("token", authData.data?.access_token)
-            yield put({type: USER_LOGIN_SUCCESS, data: authData.data.user});
+            yield put({type: USER_LOGIN_SUCCESS, payload: authData.data.user});
             successNotification("Ви успішно увійшли в систему !")
         } else {
             throw authData;

@@ -1,7 +1,7 @@
 import {
     USER_AUTH_ERROR,
     USER_AUTH_LOADING,
-    USER_LOGIN_SUCCESS,
+    USER_LOGIN_SUCCESS, USER_LOGOUT,
     USER_REGISTRATION_SUCCESS
 } from "../actions/authActions";
 
@@ -34,11 +34,18 @@ export default function authReducer(state = initialState, action) {
             return {
                 ...state,
                 currentUser: {
-                    id: action.data.id,
-                    email: action.data.email
+                    id: action.payload.id,
+                    email: action.payload.email
                 },
                 isLoading: false,
                 isAuth: true,
+            }
+        }
+        case USER_LOGOUT: {
+            return {
+                ...state,
+                currentUser: {},
+                isAuth: false
             }
         }
         case USER_AUTH_ERROR: {

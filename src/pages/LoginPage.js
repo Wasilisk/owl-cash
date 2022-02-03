@@ -11,7 +11,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {connect} from "react-redux";
-import {loginRegistration} from "../store/actions/authActions";
+import {userLogin} from "../store/actions/authActions";
 
 const schema = yup.object({
     email: yup.string().email().required(),
@@ -22,7 +22,7 @@ const LoginPage = (props) => {
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const onSubmit = data => props.loginRegistration(data.email, data.password);
+    const onSubmit = data => props.userLogin(data.email, data.password);
 
     return (
         <Flex>
@@ -54,4 +54,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {loginRegistration})(LoginPage);
+export default connect(mapStateToProps, {userLogin})(LoginPage);

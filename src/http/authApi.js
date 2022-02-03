@@ -2,7 +2,7 @@ import {authHost, host} from "./index";
 
 const authApi = {
     registration(email, password) {
-        return host.post('/signup', {email, password})
+        return host.post('auth/v1/signup', {email, password})
             .then(response => response)
             .catch((error) => {
                 if( error.response ){
@@ -11,7 +11,7 @@ const authApi = {
             })
     },
     login(email, password) {
-        return host.post('/token?grant_type=password', {email, password})
+        return host.post('auth/v1/token?grant_type=password', {email, password})
             .then(response => {
                 return response
             })
@@ -22,7 +22,7 @@ const authApi = {
             })
     },
     updatePassword(new_password) {
-        return authHost.put('/user', {new_password})
+        return authHost.put('auth/v1/user', {new_password})
             .then(response => {
                 return response
             })
