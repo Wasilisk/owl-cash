@@ -21,8 +21,8 @@ function* userRegistration({email, password}) {
             throw authData;
         }
     } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 
@@ -38,8 +38,8 @@ function* userLogin({email, password}) {
             throw authData;
         }
     } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 
@@ -52,8 +52,8 @@ function* updatePassword(new_password) {
             throw authData;
         }
     } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 

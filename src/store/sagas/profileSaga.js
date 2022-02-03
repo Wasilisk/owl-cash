@@ -17,8 +17,8 @@ function* createProfile({profilePayload}) {
             throw profileData;
         }
     } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 
@@ -32,8 +32,8 @@ function* updateProfile({updateValues}) {
             throw profileData;
         }
     } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 
@@ -47,8 +47,8 @@ function* getProfiles({searchKey, searchValue}) {
             throw profilesData;
         }
     } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data.error_description});
-        errorNotification(e.data.error_description)
+        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
+        errorNotification(e.data?.error_description)
     }
 }
 
