@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from 'prop-types';
 import React from "react";
 import ErrorMessage from "./ErrorMessage";
 import Flex from "./Flex";
@@ -72,5 +73,12 @@ const Input = React.forwardRef(({label, error, ...props}, ref) => {
         </Flex>
     )
 })
+
+Input.displayName="Input"
+
+Input.propTypes= {
+    label: PropTypes.string,
+    error: PropTypes.string,
+}
 
 export default Input;

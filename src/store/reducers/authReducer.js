@@ -27,6 +27,10 @@ export default function authReducer(state = initialState, action) {
         case USER_REGISTRATION_SUCCESS: {
             return {
                 ...state,
+                currentUser: {
+                    id: action.payload.id,
+                    email: action.payload.email
+                },
                 isLoading: false
             }
         }

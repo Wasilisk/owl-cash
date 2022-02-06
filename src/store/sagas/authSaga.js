@@ -1,4 +1,4 @@
-import { put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import Cookies from 'js-cookie';
 import authApi from '../../http/authApi'
 import {
@@ -11,18 +11,19 @@ import {
 import {errorNotification, successNotification} from "../../helpers/notifications";
 
 
-function* userRegistration({email, password}) {
+function* userRegistration({email, password, meta}) {
     try {
         yield put({type: USER_AUTH_LOADING})
         const authData = yield authApi.registration(email, password);
         if (authData.status >= 200 && authData.status < 300) {
-            yield put({type: USER_REGISTRATION_SUCCESS});
+            yield put({type: USER_REGISTRATION_SUCCESS, payload: authData.data.user});
+            yield call(meta.redirect, meta.path)
         } else {
             throw authData;
         }
-    } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: USER_AUTH_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 
@@ -37,9 +38,9 @@ function* userLogin({email, password}) {
         } else {
             throw authData;
         }
-    } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: USER_AUTH_ERROR, error: error.data.error_description});
+        errorNotification(error.data.error_description)
     }
 }
 
@@ -51,9 +52,9 @@ function* updatePassword(new_password) {
         } else {
             throw authData;
         }
-    } catch (e) {
-        yield put({type: USER_AUTH_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: USER_AUTH_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Flex from "../elements/Flex";
 import Paper from "../elements/Paper";
 import Header from "../elements/Header";
@@ -12,17 +13,22 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {connect} from "react-redux";
 import {userRegistration} from "../store/actions/authActions";
+import {useNavigate} from "react-router-dom";
 
 const schema = yup.object({
     email: yup.string().email().required(),
-    password: yup.string().min(8, "Пароль мусить містити більше 8 символів").required(),
+    password: yup.string().min(6, "Пароль мусить містити більше 8 символів").required(),
 }).required();
 
 const RegistrationPage = (props) => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const onSubmit = data => props.userRegistration(data.email, data.password)
+    const onSubmit = data => props.userRegistration(data.email, data.password, {
+        redirect: navigate,
+        path: "/create-profile"
+    })
 
     return (
         <Flex>
@@ -47,6 +53,11 @@ const RegistrationPage = (props) => {
         </Flex>
     );
 };
+
+RegistrationPage.propTypes = {
+    isLoading: PropTypes.bool,
+    userRegistration: PropTypes.func
+}
 
 const mapStateToProps = (state) => {
     return {

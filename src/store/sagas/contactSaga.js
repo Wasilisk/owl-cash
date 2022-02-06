@@ -20,9 +20,9 @@ function* createContact({owner, contact}) {
         } else {
             throw contactData;
         }
-    } catch (e) {
-        yield put({type: CONTACT_ACTION_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: CONTACT_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 
@@ -30,9 +30,9 @@ function* deleteContact({contactId}) {
     try {
         yield contactApi.deleteContact(contactId);
         yield put({type: DELETE_CONTACT, payload: contactId});
-    } catch (e) {
-        yield put({type: CONTACT_ACTION_ERROR, error: e});
-        errorNotification(e)
+    } catch (error) {
+        yield put({type: CONTACT_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 
@@ -45,9 +45,9 @@ function* getContacts({userId}) {
         } else {
             throw contactsData;
         }
-    } catch (e) {
-        yield put({type: CONTACT_ACTION_ERROR, error: e});
-        errorNotification(e)
+    } catch (error) {
+        yield put({type: CONTACT_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 

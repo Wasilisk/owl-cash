@@ -1,5 +1,5 @@
+import React from 'react';
 import 'normalize.css';
-import LoginPage from "./pages/LoginPage";
 import AppRouter from "./routes";
 
 function App() {

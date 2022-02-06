@@ -1,24 +1,41 @@
-import {put, takeEvery} from "redux-saga/effects";
-import {errorNotification} from "../../helpers/notifications";
+import {call, put, takeEvery} from "redux-saga/effects";
+import {errorNotification, successNotification} from "../../helpers/notifications";
 import profileApi from "../../http/profileApi";
 import {
-    CREATE_PROFILE, GET_PROFILES,
+    CREATE_PROFILE, GET_PROFILES, GET_USER_PROFILE,
     PROFILE_ACTION_ERROR,
     PROFILE_ACTION_LOADING, SET_PROFILES,
     SET_USER_PROFILE, UPDATE_PROFILE
 } from "../actions/profileActions";
 
-function* createProfile({profilePayload}) {
+function* getUserProfile({userId}) {
+    try {
+        const userProfileData = yield profileApi.getUserProfile(userId);
+        console.log(userProfileData)
+        if (userProfileData.status >= 200 && userProfileData.status < 300) {
+            yield put({type: SET_USER_PROFILE, payload: userProfileData.data[0]});
+        } else {
+            throw userProfileData;
+        }
+    } catch (error) {
+        yield put({type: PROFILE_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
+    }
+}
+
+function* createProfile({profilePayload, meta}) {
     try {
         const profileData = yield profileApi.createProfile(profilePayload);
         if (profileData.status >= 200 && profileData.status < 300) {
             yield put({type: SET_USER_PROFILE, payload: profileData.data[0]});
+            successNotification("Profile created successful");
+            yield call(meta.redirect, meta.path);
         } else {
             throw profileData;
         }
-    } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: PROFILE_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 
@@ -31,9 +48,9 @@ function* updateProfile({updateValues}) {
         } else {
             throw profileData;
         }
-    } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: PROFILE_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
 }
 
@@ -46,10 +63,15 @@ function* getProfiles({searchKey, searchValue}) {
         } else {
             throw profilesData;
         }
-    } catch (e) {
-        yield put({type: PROFILE_ACTION_ERROR, error: e.data?.error_description});
-        errorNotification(e.data?.error_description)
+    } catch (error) {
+        yield put({type: PROFILE_ACTION_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
     }
+}
+
+
+export function* getUserProfileSaga() {
+    yield takeEvery(GET_USER_PROFILE, getUserProfile)
 }
 
 export function* createProfileSaga() {

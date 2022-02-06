@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Flex from "../elements/Flex";
 import Paper from "../elements/Paper";
 import Header from "../elements/Header";
@@ -47,6 +48,11 @@ const LoginPage = (props) => {
         </Flex>
     );
 };
+
+LoginPage.propTypes = {
+    isLoading: PropTypes.bool,
+    userLogin: PropTypes.func
+}
 
 const mapStateToProps = (state) => {
     return {

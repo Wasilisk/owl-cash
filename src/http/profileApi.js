@@ -1,6 +1,15 @@
 import {authHost} from "./index";
 
 const profileApi = {
+    getUserProfile(userId) {
+        return authHost.get(`rest/v1/profile?user=eq.${userId}&select=*`)
+            .then(response => response)
+            .catch((error) => {
+                if (error.response) {
+                    return error.response
+                }
+            })
+    },
     getProfiles(searchKey, searchValue) {
         const searchString = searchValue && searchValue ? `${searchKey}=eq.${searchValue}` : ""
         return authHost.get(`rest/v1/profile?${searchString}&select=*`)
