@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Navigate} from "react-router-dom";
 import PropTypes from "prop-types";
 
-const PrivateRoute = ({element: RouteComponent, isAuth}) => {
+const PrivateRoute = ({component: RouteComponent, isAuth}) => {
     if (isAuth) {
         return <RouteComponent />
     }
@@ -12,7 +12,7 @@ const PrivateRoute = ({element: RouteComponent, isAuth}) => {
 };
 
 PrivateRoute.propTypes = {
-    element: PropTypes.node,
+    component: PropTypes.elementType,
     isAuth: PropTypes.bool
 }
 

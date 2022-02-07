@@ -6,8 +6,12 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #20222A;;
+    background: #20222A;
     font-family: Rubik, Open-Sans, sans-serif;
+    
+    & > div {
+      width: 100%;
+    }
   }
 `;
 

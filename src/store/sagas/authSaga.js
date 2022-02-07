@@ -27,13 +27,14 @@ function* userRegistration({email, password, meta}) {
     }
 }
 
-function* userLogin({email, password}) {
+function* userLogin({email, password, meta}) {
     try {
         yield put({type: USER_AUTH_LOADING})
         const authData = yield authApi.login(email, password);
         if (authData.status >= 200 && authData.status < 300) {
             Cookies.set("token", authData.data?.access_token)
             yield put({type: USER_LOGIN_SUCCESS, payload: authData.data.user});
+            yield call(meta.redirect, meta.path)
             successNotification("Ви успішно увійшли в систему !")
         } else {
             throw authData;
@@ -44,9 +45,9 @@ function* userLogin({email, password}) {
     }
 }
 
-function* updatePassword(new_password) {
+function* updatePassword({password}) {
     try {
-        const authData = yield authApi.updatePassword(new_password);
+        const authData = yield authApi.updatePassword(password);
         if (authData.status >= 200 && authData.status < 300) {
             successNotification("Пароль успішно змінено !")
         } else {

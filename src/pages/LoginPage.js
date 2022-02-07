@@ -13,17 +13,22 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {connect} from "react-redux";
 import {userLogin} from "../store/actions/authActions";
+import {useNavigate} from "react-router-dom";
 
 const schema = yup.object({
     email: yup.string().email().required(),
-    password: yup.string().min(8, "Пароль мусить містити більше 8 символів").required(),
+    password: yup.string().min(6, "Пароль мусить містити більше 6 символів").required(),
 }).required();
 
 const LoginPage = (props) => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState:{ errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    const onSubmit = data => props.userLogin(data.email, data.password);
+    const onSubmit = data => props.userLogin(data.email, data.password, {
+        redirect: navigate,
+        path: "/transactions"
+    });
 
     return (
         <Flex>

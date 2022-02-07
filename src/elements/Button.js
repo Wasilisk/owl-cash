@@ -9,7 +9,7 @@ const Button = styled.button`
   width: ${({width}) => width || "180px"};
   height: ${({height}) => height || "48px"};
   margin: 5px;
-  background: #F4C038;
+  background: ${({color}) => color || "#F4C038"};
   border-radius: 48px;
   border: none;
   cursor: pointer;

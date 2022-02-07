@@ -21,8 +21,8 @@ const authApi = {
                 }
             })
     },
-    updatePassword(new_password) {
-        return authHost.put('auth/v1/user', {new_password})
+    updatePassword(password) {
+        return authHost.put('auth/v1/user', {password})
             .then(response => {
                 return response
             })

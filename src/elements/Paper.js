@@ -6,7 +6,8 @@ const Paper = styled.div`
   display: flex;
   flex-direction: ${({direction}) => direction || "column"};
   border-radius: 20px;
-  padding: 30px;
+  padding: ${({padding}) => padding || "30px"};
+  margin: ${({margin}) => margin || "0px"};
   white-space: normal;
   background-color: #272E3B;
   border: 2px solid #3D4554;

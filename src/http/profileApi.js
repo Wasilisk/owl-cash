@@ -11,8 +11,17 @@ const profileApi = {
             })
     },
     getProfiles(searchKey, searchValue) {
-        const searchString = searchValue && searchValue ? `${searchKey}=eq.${searchValue}` : ""
+        const searchString = searchKey && searchValue ? `${searchKey}=eq.${searchValue}` : ""
         return authHost.get(`rest/v1/profile?${searchString}&select=*`)
+            .then(response => response)
+            .catch((error) => {
+                if (error.response) {
+                    return error.response
+                }
+            })
+    },
+    getProfilesById(usersId) {
+        return authHost.get(`rest/v1/profile?user=in.(${usersId.join(",")})&select=*`)
             .then(response => response)
             .catch((error) => {
                 if (error.response) {

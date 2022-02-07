@@ -8,6 +8,6 @@ export const USER_AUTH_ERROR = "USER_AUTH_ERROR";
 export const UPDATE_PASSWORD = "UPDATE_PASSWORD";
 
 export const userRegistration = (email, password, meta) => ({type: USER_REGISTRATION, email, password, meta});
-export const userLogin = (email, password) => ({type: USER_LOGIN, email, password});
+export const userLogin = (email, password, meta) => ({type: USER_LOGIN, email, password, meta});
 export const userLogout = () => ({type: USER_LOGOUT})
-export const updatePassword = (new_password) => ({type: UPDATE_PASSWORD, new_password})
+export const updatePassword = (password) => ({type: UPDATE_PASSWORD, password})

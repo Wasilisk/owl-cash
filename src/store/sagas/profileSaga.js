@@ -10,8 +10,8 @@ import {
 
 function* getUserProfile({userId}) {
     try {
+        yield put({type: PROFILE_ACTION_LOADING})
         const userProfileData = yield profileApi.getUserProfile(userId);
-        console.log(userProfileData)
         if (userProfileData.status >= 200 && userProfileData.status < 300) {
             yield put({type: SET_USER_PROFILE, payload: userProfileData.data[0]});
         } else {
@@ -45,6 +45,7 @@ function* updateProfile({updateValues}) {
         const profileData = yield profileApi.updateProfile(updateValues);
         if (profileData.status >= 200 && profileData.status < 300) {
             yield put({type: SET_USER_PROFILE, payload: profileData.data[0]});
+            successNotification("Профіль створено успішно !")
         } else {
             throw profileData;
         }
