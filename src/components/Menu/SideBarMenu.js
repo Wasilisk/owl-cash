@@ -36,7 +36,7 @@ const SideBarMenu = () => {
             <MenuItem
                 label="Search"
                 icon={<FaSearch/>}
-                to="/search"
+                to="/search_user"
             />
 
         </MenuContainer>

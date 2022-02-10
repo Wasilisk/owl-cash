@@ -42,11 +42,7 @@ const PaginateContainer = styled.div`
   
 `
 
-const Paginate = ({pageCount, setCurrentPage}) => {
-
-    const handlePageClick = ({ selected: selectedPage }) => {
-        setCurrentPage(selectedPage);
-    }
+const Paginate = ({pageCount, ...props}) => {
 
     return (
             <PaginateContainer>
@@ -54,12 +50,12 @@ const Paginate = ({pageCount, setCurrentPage}) => {
                     previousLabel={"← Previous"}
                     nextLabel={"Next →"}
                     pageCount={pageCount}
-                    onPageChange={handlePageClick}
                     containerClassName={"pagination"}
                     previousLinkClassName={"pagination__link"}
                     nextLinkClassName={"pagination__link"}
                     disabledClassName={"pagination__link--disabled"}
                     activeClassName={"pagination__link--active"}
+                    {...props}
                 />
             </PaginateContainer>
     );
@@ -67,7 +63,6 @@ const Paginate = ({pageCount, setCurrentPage}) => {
 
 Paginate.propTypes = {
     pageCount: PropTypes.number,
-    setCurrentPage: PropTypes.func
 }
 
 export default Paginate;

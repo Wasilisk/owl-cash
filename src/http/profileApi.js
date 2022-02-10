@@ -10,9 +10,28 @@ const profileApi = {
                 }
             })
     },
-    getProfiles(searchKey, searchValue) {
+    getProfiles(searchKey, searchValue, from, to) {
         const searchString = searchKey && searchValue ? `${searchKey}=eq.${searchValue}` : ""
-        return authHost.get(`rest/v1/profile?${searchString}&select=*`)
+        return authHost.get(`rest/v1/profile?${searchString}&select=*`, {
+            headers: {
+                Range: `${from}-${to}`
+            }
+        })
+            .then(response => response)
+            .catch((error) => {
+                if (error.response) {
+                    return error.response
+                }
+            })
+    },
+    getTotalProfiles(searchKey, searchValue) {
+        const searchString = searchKey && searchValue ? `${searchKey}=eq.${searchValue}` : ""
+        return authHost.get(`rest/v1/profile?${searchString}&select=id`, {
+            headers: {
+                Range: "0-0",
+                Prefer: "count=exact,head=true"
+            }
+        })
             .then(response => response)
             .catch((error) => {
                 if (error.response) {

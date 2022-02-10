@@ -7,6 +7,8 @@ import {
     PROFILE_ACTION_LOADING, SET_PROFILES,
     SET_USER_PROFILE, UPDATE_PROFILE
 } from "../actions/profileActions";
+import contactApi from "../../http/contactApi";
+import * as _ from "lodash";
 
 function* getUserProfile({userId}) {
     try {
@@ -55,12 +57,29 @@ function* updateProfile({updateValues}) {
     }
 }
 
-function* getProfiles({searchKey, searchValue}) {
+function* getProfiles({userId, searchKey, searchValue, from, to}) {
     try {
         yield put({type: PROFILE_ACTION_LOADING})
-        const profilesData = yield profileApi.getProfiles(searchKey, searchValue);
+        const totalProfiles = yield profileApi.getTotalProfiles(searchKey, searchValue);
+        const profilesData = yield profileApi.getProfiles(searchKey, searchValue, from, to);
+
+        const contactsId = profilesData.data.map(profileInfo => profileInfo.user)
+
+        const contactsData = yield contactApi.getContactsById(userId, contactsId)
+
+        const updatedProfilesData = _.map(profilesData.data, (profileInfo) => {
+            return _.extend(profileInfo,
+                {isUserContact: _.includes(_.map(contactsData.data, 'contact'), profileInfo.user)}
+            );
+        });
+
         if (profilesData.status >= 200 && profilesData.status < 300) {
-            yield put({type: SET_PROFILES, payload: profilesData.data});
+            yield put({
+                type: SET_PROFILES, payload: {
+                    userProfiles: updatedProfilesData,
+                    totalProfiles: +totalProfiles.headers["content-range"].split("/")[1]
+                }
+            });
         } else {
             throw profilesData;
         }
@@ -69,7 +88,6 @@ function* getProfiles({searchKey, searchValue}) {
         errorNotification(error.data.msg)
     }
 }
-
 
 export function* getUserProfileSaga() {
     yield takeEvery(GET_USER_PROFILE, getUserProfile)

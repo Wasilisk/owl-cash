@@ -6,7 +6,7 @@ import {
     USER_REGISTRATION_SUCCESS,
     USER_LOGIN_SUCCESS,
     USER_LOGIN,
-    USER_REGISTRATION, UPDATE_PASSWORD, USER_AUTH_LOADING
+    USER_REGISTRATION, UPDATE_PASSWORD, USER_AUTH_LOADING, PASSWORD_RECOVERY
 } from "../actions/authActions";
 import {errorNotification, successNotification} from "../../helpers/notifications";
 
@@ -45,10 +45,25 @@ function* userLogin({email, password, meta}) {
     }
 }
 
-function* updatePassword({password}) {
+function* passwordRecovery({email}) {
     try {
-        const authData = yield authApi.updatePassword(password);
+        const recoveryData = yield authApi.passwordRecovery(email);
+        if (recoveryData.status >= 200 && recoveryData.status < 300) {
+            successNotification("На вашу електронну пошту прийшов лист !")
+        } else {
+            throw recoveryData;
+        }
+    } catch (error) {
+        yield put({type: USER_AUTH_ERROR, error: error.data.msg});
+        errorNotification(error.data.msg)
+    }
+}
+
+function* updatePassword({accessToken, password, meta}) {
+    try {
+        const authData = yield authApi.updatePassword(accessToken, password);
         if (authData.status >= 200 && authData.status < 300) {
+            yield call(meta.redirect, meta.path)
             successNotification("Пароль успішно змінено !")
         } else {
             throw authData;
@@ -65,6 +80,10 @@ export function* loginSaga() {
 
 export function* registrationSaga() {
     yield takeEvery(USER_REGISTRATION, userRegistration);
+}
+
+export function* passwordRecoveryData() {
+    yield takeEvery(PASSWORD_RECOVERY, passwordRecovery);
 }
 
 export function* updatePasswordSaga() {

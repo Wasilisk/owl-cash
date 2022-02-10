@@ -25,6 +25,15 @@ const contactApi = {
                 }
             })
     },
+    getContactsById(userId, contactsId) {
+        return authHost.get(`rest/v1/contact?owner=eq.${userId}&contact=in.(${contactsId.join(",")})&select=contact`)
+            .then(response => response)
+            .catch((error) => {
+                if (error.response) {
+                    return error.response
+                }
+            })
+    },
     getContacts(userId) {
         return authHost.get(`rest/v1/contact?owner=eq.${userId}&select=*`)
             .then(response => {

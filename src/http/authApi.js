@@ -1,4 +1,4 @@
-import {authHost, host} from "./index";
+import {host} from "./index";
 
 const authApi = {
     registration(email, password) {
@@ -21,8 +21,23 @@ const authApi = {
                 }
             })
     },
-    updatePassword(password) {
-        return authHost.put('auth/v1/user', {password})
+    passwordRecovery(email) {
+        return host.post('auth/v1/recover', {email})
+            .then(response => {
+                return response
+            })
+            .catch((error) => {
+                if( error.response ){
+                    return error.response;
+                }
+            })
+    },
+    updatePassword(accessToken, password) {
+        return host.put('auth/v1/user', {password}, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        })
             .then(response => {
                 return response
             })

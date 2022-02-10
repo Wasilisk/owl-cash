@@ -42,6 +42,7 @@ function* getTranslations({userId}) {
                 return transaction[key];
             });
         }));
+
         const userProfiles = yield profileApi.getProfilesById(usersId);
 
         const transactionData = _.map(sortedTransaction, function(transaction){

@@ -23,8 +23,6 @@ const InputContainer = styled.div`
     padding-left: 15px;
 
     /*Input text*/
-    font-family: Rubik, sans-serif;
-    font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 24px;

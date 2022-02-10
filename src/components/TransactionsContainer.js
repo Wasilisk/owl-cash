@@ -7,13 +7,17 @@ import Loading from "./Loading";
 
 
 const TransactionsContainer = ({transactions, userId, isLoading}) => {
-    const [currentPage, setCurrentPage] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
 
-    const perPage = 5;
-    const offset = currentPage * perPage;
-    const pageCount = Math.ceil(transactions.length / perPage);
+    const itemsPerPage = 5;
+    const pageCount = Math.ceil(transactions.length / itemsPerPage);
 
-    const currentPageData = transactions.slice(offset, offset + perPage)
+    const currentPageData = transactions.slice(itemOffset, itemOffset + itemsPerPage)
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * itemsPerPage) % transactions.length;
+        setItemOffset(newOffset);
+    };
 
     if(isLoading) {
         return <Loading/>
@@ -48,7 +52,7 @@ const TransactionsContainer = ({transactions, userId, isLoading}) => {
                 transactions.length > 5
                     ? <Paginate
                         pageCount={pageCount}
-                        setCurrentPage={setCurrentPage}
+                        onPageChange={handlePageClick}
                     />
                     : null
             }

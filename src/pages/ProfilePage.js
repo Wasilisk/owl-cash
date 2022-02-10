@@ -8,14 +8,12 @@ import {getUserProfile, updateProfile} from "../store/actions/profileActions";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import MainLayout from "../components/MainLayout";
-import UpdatePassword from "../components/UpdatePassword";
 import Button from "../elements/Button";
-import {updatePassword} from "../store/actions/authActions";
 import UpdateProfile from "../components/UpdateProfile";
+import {passwordRecovery} from "../store/actions/authActions";
 
-const ProfilePage = ({userProfile, userId, isLoading, getUserProfile, updateProfile, updatePassword}) => {
+const ProfilePage = ({userProfile, userId, isLoading, getUserProfile, updateProfile, passwordRecovery}) => {
     const [isProfileUpdateOpen, setIsProfileUpdateOpen] = useState(false);
-    const [isPasswordUpdateOpen, setIsPasswordUpdateOpen] = useState(false);
 
     useEffect(() => {
         getUserProfile(userId)
@@ -66,22 +64,12 @@ const ProfilePage = ({userProfile, userId, isLoading, getUserProfile, updateProf
                                     </Typography>
                                 </Flex>
                             </Paper>
-                            {
-                                isPasswordUpdateOpen
-                                    ? null
-                                    : <Button width="300px" onClick={() => setIsProfileUpdateOpen(true)}>
-                                        Update Profile
-                                    </Button>
-                            }
+                            <Button width="300px" onClick={() => setIsProfileUpdateOpen(true)}>
+                                Update Profile
+                            </Button>
                         </>
                 }
-                {
-                    isPasswordUpdateOpen
-                        ? <UpdatePassword setIsOpen={setIsPasswordUpdateOpen} updatePassword={updatePassword}/>
-                        : isProfileUpdateOpen
-                            ? null
-                            : <Button width="300px" onClick={() => setIsPasswordUpdateOpen(true)}>Update Password</Button>
-                }
+                <Button width="300px" onClick={() => passwordRecovery(userProfile.email)}>Update Password</Button>
             </Flex>
         </MainLayout>
     );
@@ -92,8 +80,8 @@ ProfilePage.propTypes = {
     userId: PropTypes.string,
     isLoading: PropTypes.bool,
     getUserProfile: PropTypes.func,
-    updatePassword: PropTypes.func,
-    updateProfile: PropTypes.func
+    updateProfile: PropTypes.func,
+    passwordRecovery: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -104,4 +92,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {updateProfile, updatePassword, getUserProfile})(ProfilePage);
+export default connect(mapStateToProps, {passwordRecovery, getUserProfile, updateProfile})(ProfilePage);
