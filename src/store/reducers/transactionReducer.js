@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash';
+
 import {
     ADD_TRANSACTION,
     SET_TRANSACTIONS,
@@ -8,6 +8,7 @@ import {
 
 const initialState = {
     transactions: [],
+    userAmount: null,
     isLoading: false,
     error: ''
 };
@@ -24,16 +25,16 @@ export default function transactionReducer(state = initialState, action) {
         case SET_TRANSACTIONS: {
             return {
                 ...state,
-                transactions: uniqBy(action.payload, "id").sort((x, y) => {
-                    return new Date(x.created_at) - new Date(y.created_at);
-                }),
+                transactions: action.payload.transactions,
+                userAmount: action.payload.userAmount,
                 isLoading: false
             }
         }
         case ADD_TRANSACTION: {
             return {
                 ...state,
-                transactions: [...state.transactions, action.payload],
+                transactions: [action.payload, ...state.transactions],
+                userAmount: state.userAmount - action.payload.amount,
                 isLoading: false
             }
         }

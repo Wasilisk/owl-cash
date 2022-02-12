@@ -5,10 +5,10 @@ import {getTransactions} from "../store/actions/transactionActions";
 import PropTypes from "prop-types";
 import UserAmount from "../components/UserAmount";
 import Flex from "../elements/Flex";
-import TransactionsContainer from "../components/TransactionsContainer";
+import TransactionsContainer from "../components/Transactions/TransactionsContainer";
 import Button from "../elements/Button";
-import AddTransaction from "../components/AddTransaction";
 import Modal from "styled-react-modal";
+import AddTransaction from "../components/Transactions/AddTransaction";
 
 const StyledModal = Modal.styled`
   display: flex;
@@ -21,16 +21,16 @@ const TransactionsPage = (props) => {
 
     useEffect(() => {
             props.getTransactions(props.userId)
-        }
-    , [])
+        }, [])
 
     const toggleModal = () => {
-        setIsOpen(!isOpen)
+        setIsOpen(!isOpen);
     }
+
     return (
         <MainLayout>
             <Flex>
-                <UserAmount transactions={props.transactions} userId={props.userId} isLoading={props.isLoading}/>
+                <UserAmount userAmount={props.userAmount} isLoading={props.isLoading}/>
                 <Button onClick={toggleModal}>Add Transaction</Button>
                 <StyledModal
                     isOpen={isOpen}
@@ -47,6 +47,7 @@ const TransactionsPage = (props) => {
 
 TransactionsPage.propTypes= {
     userId: PropTypes.string,
+    userAmount: PropTypes.number,
     transactions: PropTypes.any,
     isLoading: PropTypes.bool,
     getTransactions: PropTypes.func
@@ -55,6 +56,7 @@ TransactionsPage.propTypes= {
 const mapStateToProps = (state) => {
     return {
         userId: state.auth.currentUser.id,
+        userAmount: state.transaction.userAmount,
         transactions: state.transaction.transactions,
         isLoading: state.transaction.isLoading,
     }

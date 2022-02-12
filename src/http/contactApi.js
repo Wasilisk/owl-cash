@@ -25,8 +25,14 @@ const contactApi = {
                 }
             })
     },
-    getContactsById(userId, contactsId) {
-        return authHost.get(`rest/v1/contact?owner=eq.${userId}&contact=in.(${contactsId.join(",")})&select=contact`)
+    getTotalContacts(userId, searchKey, searchValue) {
+        const searchString = searchKey && searchValue ? `${searchKey}=eq.${searchValue}` : ""
+        return authHost.get(`rest/v1/contact?${searchString}&owner=eq.${userId}&select=id`, {
+            headers: {
+                Range: "0-0",
+                Prefer: "count=exact,head=true"
+            }
+        })
             .then(response => response)
             .catch((error) => {
                 if (error.response) {
@@ -34,14 +40,25 @@ const contactApi = {
                 }
             })
     },
-    getContacts(userId) {
-        return authHost.get(`rest/v1/contact?owner=eq.${userId}&select=*`)
-            .then(response => {
-                return response
-            })
+    getContactsById(userId, contactIds) {
+        return authHost.get(`rest/v1/contact?owner=eq.${userId}&contact=in.(${contactIds.join(",")})&select=*`)
+            .then(response => response)
             .catch((error) => {
                 if (error.response) {
-                    return error.response;
+                    return error.response
+                }
+            })
+    },
+    getContacts(userId, from, to) {
+        return authHost.get(`rest/v1/contact?owner=eq.${userId}&select=*`, {
+            headers: {
+                Range: `${from}-${to}`
+            }
+        })
+            .then(response => response)
+            .catch((error) => {
+                if (error.response) {
+                    return error.response
                 }
             })
     }

@@ -42,7 +42,7 @@ export default function profileReducer(state = initialState, action) {
         case SET_PROFILES: {
             return {
                 ...state,
-                userProfiles: action.payload.userProfiles.filter(profile => profile.id !== state.currentProfile.id),
+                userProfiles: action.payload.userProfiles.filter(profile => profile.user !== action.payload.id),
                 isLoading: false,
                 totalProfiles: action.payload.totalProfiles
             }

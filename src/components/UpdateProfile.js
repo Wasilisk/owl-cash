@@ -37,8 +37,8 @@ const UpdateProfile = ({userId, userProfile, setIsOpen, updateProfile}) => {
             </Flex>
         </Paper>
             <Flex direction="row">
-                <InputButton color="rgba(60, 191, 39, 1)" type="submit" value="Update"/>
-                <Button color="rgba(244, 117, 35, 1)" type="button" onClick={() => setIsOpen(false)}>Cancel</Button>
+                <InputButton type="submit" value="Update"/>
+                <Button type="button" onClick={() => setIsOpen(false)}>Cancel</Button>
             </Flex>
         </Form>
     );

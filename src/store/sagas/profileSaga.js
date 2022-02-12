@@ -76,6 +76,7 @@ function* getProfiles({userId, searchKey, searchValue, from, to}) {
         if (profilesData.status >= 200 && profilesData.status < 300) {
             yield put({
                 type: SET_PROFILES, payload: {
+                    id: userId,
                     userProfiles: updatedProfilesData,
                     totalProfiles: +totalProfiles.headers["content-range"].split("/")[1]
                 }

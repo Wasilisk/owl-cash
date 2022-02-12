@@ -7,6 +7,6 @@ export const DELETE_CONTACT_REQUEST="DELETE_CONTACT_REQUEST";
 export const DELETE_CONTACT="DELETE_CONTACT";
 export const CONTACT_ACTION_ERROR="CONTACT_ACTION_ERROR";
 
-export const getContacts = (userId) => ({type: GET_CONTACTS, userId})
-export const createContact = (owner, contact) => ({type: ADD_CONTACT_REQUEST, owner, contact});
-export const deleteContact = (contactId) => ({type: DELETE_CONTACT_REQUEST, contactId});
+export const getContacts = (userId, searchKey, searchValue, from, to) => ({type: GET_CONTACTS, userId, searchKey, searchValue, from, to})
+export const createContact = (owner, contact, setLoader) => ({type: ADD_CONTACT_REQUEST, owner, contact, setLoader});
+export const deleteContact = (contactId, setIsLoading) => ({type: DELETE_CONTACT_REQUEST, contactId, setIsLoading});

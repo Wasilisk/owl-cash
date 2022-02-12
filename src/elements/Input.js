@@ -8,7 +8,7 @@ const InputContainer = styled.div`
   position: relative;
   
   & > input {
-    width: 400px;
+    width: ${({width}) => width || "400px"};
     height: 48px;
     position: relative;
     border: ${({error}) => error ? "2px solid rgba(217, 56, 85, 1)" : "2px solid #3D4554"};
@@ -60,10 +60,10 @@ const InputContainer = styled.div`
   }
 `
 
-const Input = React.forwardRef(({label, error, ...props}, ref) => {
+const Input = React.forwardRef(({width, label, error, ...props}, ref) => {
     return (
-        <Flex alignItems="start">
-            <InputContainer error={error}>
+        <Flex alignItems="start" width={width}>
+            <InputContainer width={width} error={error}>
                 <input ref={ref} {...props} required/>
                 <label>{label}</label>
             </InputContainer>
@@ -77,6 +77,7 @@ Input.displayName="Input"
 Input.propTypes= {
     label: PropTypes.string,
     error: PropTypes.string,
+    width: PropTypes.string
 }
 
 export default Input;

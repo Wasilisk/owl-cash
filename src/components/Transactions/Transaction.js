@@ -1,6 +1,6 @@
 import React from 'react';
-import Paper from "../elements/Paper";
-import Flex from "../elements/Flex";
+import Paper from "../../elements/Paper";
+import Flex from "../../elements/Flex";
 import PropTypes from "prop-types";
 import {FaCheck, FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa"
 import styled from "styled-components";

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import Paginate from "./Paginate";
-import Flex from "../elements/Flex";
+import Paginate from "../Paginate";
+import Flex from "../../elements/Flex";
 import PropTypes from "prop-types";
 import Transaction from "./Transaction";
-import Loading from "./Loading";
+import Loading from "../Loading";
 
 
 const TransactionsContainer = ({transactions, userId, isLoading}) => {

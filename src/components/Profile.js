@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Flex from "../elements/Flex";
 import Paper from "../elements/Paper";
 import styled from "styled-components"
@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import Typography from "../elements/Typography";
 import {createContact} from "../store/actions/contactActions";
 import {connect} from "react-redux";
+import Loader from "../assets/loader/Loader";
 
 const AvatarContainer = styled.div`
   width: 40px;
@@ -33,6 +34,7 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   & > svg {
     height: 20px;
     width: 20px;
@@ -57,6 +59,8 @@ const IconButton = styled.button`
 `
 
 const Profile = ({userId, profileData, createContact}) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     return (
         <Paper width="500px" padding="10px" margin="5px">
             <Flex direction="row">
@@ -75,9 +79,11 @@ const Profile = ({userId, profileData, createContact}) => {
                         ? <IconContainer>
                             <FaUserCheck/>
                         </IconContainer>
-                        : <IconButton onClick={() => createContact(userId, profileData.user)}>
-                            <FaUserPlus/>
-                        </IconButton>
+                        : isLoading
+                            ? <Loader/>
+                            : <IconButton onClick={() => createContact(userId, profileData.user, setIsLoading)}>
+                                <FaUserPlus/>
+                            </IconButton>
                 }
             </Flex>
         </Paper>

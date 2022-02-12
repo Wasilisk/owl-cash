@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import Paper from "../elements/Paper";
 import PropTypes from "prop-types";
 import Flex from "../elements/Flex";
@@ -24,19 +24,7 @@ const AmountContainer = styled.div`
   }
 `
 
-const UserAmount = ({transactions, userId, isLoading}) => {
-
-    const amount = useMemo(() => {
-        return transactions.reduce((amountValue, currentValue) => {
-            if (currentValue.from.user === currentValue.to.user) {
-                return amountValue + currentValue.amount
-            } else if (currentValue.from.user === userId) {
-                return amountValue - currentValue.amount;
-            } else {
-                return amountValue + currentValue.amount
-            }
-        }, 0)
-    }, [transactions])
+const UserAmount = ({userAmount, isLoading}) => {
 
     return (
         <Paper height="200px" width="400px" margin="20px">
@@ -52,7 +40,7 @@ const UserAmount = ({transactions, userId, isLoading}) => {
                     <h1>{
                         isLoading
                             ? "Loading..."
-                            : `$${amount}`
+                            : `$${userAmount}`
                     }</h1>
                 </AmountContainer>
             </Flex>
@@ -61,6 +49,7 @@ const UserAmount = ({transactions, userId, isLoading}) => {
 };
 
 UserAmount.propTypes = {
+    userAmount: PropTypes.number,
     userId: PropTypes.string,
     transactions: PropTypes.array,
     isLoading: PropTypes.bool

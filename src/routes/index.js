@@ -11,6 +11,7 @@ import SearchUsersPage from "../pages/SearchUsersPage";
 import UpdatePasswordPage from "../pages/UpdatePasswordPage";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import ContactsPage from "../pages/ContactsPage";
 
 const AppRouter = ({isRehydrated}) => {
     let location = useLocation();
@@ -34,13 +35,16 @@ const AppRouter = ({isRehydrated}) => {
                     <Route path="/create-profile" element={<CreateProfilePage/>}/>
                 </Route>
                 <Route element={<PrivateRoute/>}>
-                    <Route path="/transactions" element={<TransactionsPage/>}/>
+                    <Route path="/transactions/*" element={<TransactionsPage/>}/>
                 </Route>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/profile" element={<ProfilePage/>}/>
                 </Route>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/search_user" element={<SearchUsersPage/>}/>
+                </Route>
+                <Route element={<PrivateRoute/>}>
+                    <Route path="/contacts" element={<ContactsPage/>}/>
                 </Route>
                 <Route element={<PrivateRoute/>}>
                     <Route path="/update_password" element={<UpdatePasswordPage/>}/>

@@ -6,5 +6,5 @@ export const TRANSACTION_ACTION_LOADING = "TRANSACTION_ACTION_LOADING";
 export const TRANSACTION_ACTION_ERROR = "TRANSACTION_ACTION_ERROR";
 
 
-export const createTransaction = (transactionPayload) => ({type: CREATE_TRANSACTION, transactionPayload});
+export const createTransaction = (transactionPayload, setLoader, setStatus) => ({type: CREATE_TRANSACTION, transactionPayload, setLoader, setStatus});
 export const getTransactions = (userId) => ({type: GET_TRANSACTIONS, userId});

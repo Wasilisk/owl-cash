@@ -8,7 +8,7 @@ export const CustomSelect = styled(ReactSelect)`
   }
   & .Select__control {
     margin-left: 10px;
-    width: 160px;
+    width: ${({width}) => width || "160px"};
     border-radius: 24px;
     background-color: #272E3B;
     border: 2px solid #3D4554;
@@ -44,5 +44,9 @@ export const CustomSelect = styled(ReactSelect)`
   
   & .Select__option--is-selected {
     background-color: rgba(66, 81, 112, 1);
+  }
+  
+  & .Select__input-container {
+    color: white;
   }
 `

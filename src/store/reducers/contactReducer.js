@@ -9,6 +9,7 @@ import {
 const initialState = {
     contacts: [],
     isLoading: false,
+    totalContacts: null,
     error: ''
 };
 
@@ -24,7 +25,10 @@ export default function contactReducer(state = initialState, action) {
         case SET_CONTACTS: {
             return {
                 ...state,
-                contacts: action.payload
+                contacts: action.payload.userContacts,
+                totalContacts: action.payload.totalContacts,
+                isLoading: false,
+                error: ''
             }
         }
         case ADD_CONTACT: {
