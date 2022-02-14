@@ -1,6 +1,8 @@
+/* node-modules */
 import { call, put, takeEvery } from 'redux-saga/effects'
 import Cookies from 'js-cookie';
-import authApi from '../../http/authApi'
+
+/*actions */
 import {
     USER_AUTH_ERROR,
     USER_REGISTRATION_SUCCESS,
@@ -8,6 +10,14 @@ import {
     USER_LOGIN,
     USER_REGISTRATION, UPDATE_PASSWORD, USER_AUTH_LOADING, PASSWORD_RECOVERY
 } from "../actions/authActions";
+
+/* http */
+import authApi from '../../http/authApi'
+
+/* localization */
+import i18n from '../../i18n';
+
+/* helpers */
 import {errorNotification, successNotification} from "../../helpers/notifications";
 
 
@@ -22,7 +32,7 @@ function* userRegistration({email, password, meta}) {
             throw authData;
         }
     } catch (error) {
-        yield put({type: USER_AUTH_ERROR, error: error.data.msg});
+        yield put({type: USER_AUTH_ERROR, error: error.data?.msg});
         errorNotification(error.data.msg)
     }
 }
@@ -35,7 +45,7 @@ function* userLogin({email, password, meta}) {
             Cookies.set("token", authData.data?.access_token)
             yield put({type: USER_LOGIN_SUCCESS, payload: authData.data.user});
             yield call(meta.redirect, meta.path)
-            successNotification("Ви успішно увійшли в систему !")
+            successNotification(i18n.t("success_login", {ns: "notifications"}))
         } else {
             throw authData;
         }
@@ -49,7 +59,7 @@ function* passwordRecovery({email}) {
     try {
         const recoveryData = yield authApi.passwordRecovery(email);
         if (recoveryData.status >= 200 && recoveryData.status < 300) {
-            successNotification("На вашу електронну пошту прийшов лист !")
+            successNotification(i18n.t("recovery_password", {ns: "notifications"}))
         } else {
             throw recoveryData;
         }
@@ -64,7 +74,7 @@ function* updatePassword({accessToken, password, meta}) {
         const authData = yield authApi.updatePassword(accessToken, password);
         if (authData.status >= 200 && authData.status < 300) {
             yield call(meta.redirect, meta.path)
-            successNotification("Пароль успішно змінено !")
+            successNotification(i18n.t("password_updated", {ns: "notifications"}))
         } else {
             throw authData;
         }

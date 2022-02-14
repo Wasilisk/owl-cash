@@ -1,5 +1,10 @@
+/* node-modules */
 import React from "react"
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+
+/* components */
 import LoginPage from "../pages/LoginPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import WelcomePage from "../pages/WelcomePage";
@@ -9,11 +14,9 @@ import PrivateRoute from "./PrivateRoute";
 import ProfilePage from "../pages/ProfilePage";
 import SearchUsersPage from "../pages/SearchUsersPage";
 import UpdatePasswordPage from "../pages/UpdatePasswordPage";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
 import ContactsPage from "../pages/ContactsPage";
 
-const AppRouter = ({isRehydrated}) => {
+const AppRouter = ({isRehydrated, isProfileCreated}) => {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -31,7 +34,7 @@ const AppRouter = ({isRehydrated}) => {
                 <Route index element={<WelcomePage/>}/>
                 <Route path="/registration" element={<RegistrationPage/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
-                <Route element={<PrivateRoute/>}>
+                <Route element={<PrivateRoute option={isProfileCreated}/>}>
                     <Route path="/create-profile" element={<CreateProfilePage/>}/>
                 </Route>
                 <Route element={<PrivateRoute/>}>
@@ -59,12 +62,14 @@ const AppRouter = ({isRehydrated}) => {
 }
 
 AppRouter.propTypes = {
-    isRehydrated: PropTypes.bool
+    isRehydrated: PropTypes.bool,
+    isProfileCreated: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {
     return {
-        isRehydrated: state._persist.rehydrated
+        isRehydrated: state._persist.rehydrated,
+        isProfileCreated: state.auth.isProfileCreated
     }
 }
 

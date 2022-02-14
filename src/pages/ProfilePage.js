@@ -1,19 +1,29 @@
+/* node-modules */
 import React, {useEffect, useState} from 'react';
-import Flex from "../elements/Flex";
-import OwlIcon from "../assets/images/owl4.png"
-import Image from "../elements/Image";
-import Paper from "../elements/Paper";
-import Typography from "../elements/Typography";
-import {getUserProfile, updateProfile} from "../store/actions/profileActions";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {useTranslation} from "react-i18next";
+
+/* components */
 import MainLayout from "../components/MainLayout";
+import UpdateProfile from "../components/Profiles/UpdateProfile";
+import ProfileContainer from "../components/Profiles/ProfileContainer";
+
+/* elements */
+import Flex from "../elements/Flex";
+import Image from "../elements/Image";
 import Button from "../elements/Button";
-import UpdateProfile from "../components/UpdateProfile";
+
+/* assets */
+import OwlIcon from "../assets/images/owl4.png"
+
+/* actions */
+import {getUserProfile, updateProfile} from "../store/actions/profileActions";
 import {passwordRecovery} from "../store/actions/authActions";
 
 const ProfilePage = ({userProfile, userId, isLoading, getUserProfile, updateProfile, passwordRecovery}) => {
     const [isProfileUpdateOpen, setIsProfileUpdateOpen] = useState(false);
+    const { t } = useTranslation("buttons")
 
     useEffect(() => {
         getUserProfile(userId)
@@ -32,56 +42,31 @@ const ProfilePage = ({userProfile, userId, isLoading, getUserProfile, updateProf
                             setIsOpen={setIsProfileUpdateOpen}
                         />
                         : <>
-                            <Paper width="400px" margin="10px">
-                                <Flex direction="row" justifyContent="flex-start">
-                                    <Typography>First name:</Typography>
-                                    <Typography marginLeft="10px" color="#F4C038">
-                                        {
-                                            isLoading
-                                                ? "... Loading"
-                                                : userProfile.firstName
-                                        }
-                                    </Typography>
-                                </Flex>
-                                <Flex direction="row" justifyContent="flex-start">
-                                    <Typography>Last name:</Typography>
-                                    <Typography marginLeft="10px" color="#F4C038">
-                                        {
-                                            isLoading
-                                                ? "... Loading"
-                                                : userProfile.lastName
-                                        }
-                                    </Typography>
-                                </Flex>
-                                <Flex direction="row" justifyContent="flex-start">
-                                    <Typography>Email:</Typography>
-                                    <Typography marginLeft="10px" color="#F4C038">
-                                        {
-                                            isLoading
-                                                ? "... Loading"
-                                                : userProfile.email
-                                        }
-                                    </Typography>
-                                </Flex>
-                            </Paper>
-                            <Button width="300px" onClick={() => setIsProfileUpdateOpen(true)}>
-                                Update Profile
+                            <ProfileContainer
+                                isLoading={isLoading}
+                                userProfile={userProfile}
+                                setIsOpen={setIsProfileUpdateOpen}
+                            />
+                            <Button
+                                width="300px"
+                                onClick={() => passwordRecovery(userProfile.email)}
+                            >
+                                {t("change_password")}
                             </Button>
                         </>
                 }
-                <Button width="300px" onClick={() => passwordRecovery(userProfile.email)}>Update Password</Button>
             </Flex>
         </MainLayout>
     );
 };
 
 ProfilePage.propTypes = {
-    userProfile: PropTypes.object,
-    userId: PropTypes.string,
-    isLoading: PropTypes.bool,
-    getUserProfile: PropTypes.func,
-    updateProfile: PropTypes.func,
-    passwordRecovery: PropTypes.func
+    userProfile: PropTypes.object.isRequired,
+    userId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    getUserProfile: PropTypes.func.isRequired,
+    updateProfile: PropTypes.func.isRequired,
+    passwordRecovery: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

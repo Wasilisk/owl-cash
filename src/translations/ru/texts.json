@@ -1,0 +1,39 @@
+{
+  "common": {
+    "loading": "Загрузка..."
+  },
+  "login_form": {
+    "header": "Логин",
+    "not_registered": "Ещё не зарегистрированы ?",
+    "register": "Регистрация"
+  },
+  "registration_form": {
+    "header": "Регистрация",
+    "already_registered": "Уже зарегистрированы ?",
+    "login": "Войти"
+  },
+  "create_profile": {
+    "header": "Создайте Профиль"
+  },
+  "transaction_page": {
+    "header": "Новая Транзакция",
+    "total_amount": "Ваш баланс",
+    "recipient": "Получатель:",
+    "amount": "Сума:",
+    "on_your_account": "На вашем счету:",
+    "status": {
+      "loading": "Отправка транзакции...",
+      "success": "Транзакция прошла успешно",
+      "error": "Во время транзакции произошла ошибка"
+    }
+  },
+  "profile_page": {
+    "header": "Ваш профиль"
+  },
+  "password_recovery": {
+    "header": "Восстановление Пароля",
+    "owl_phrase": "- Не забывайте свой пароль, умоляю..."
+  },
+  "contacts_empty": "У вас нет никаких контактов",
+  "search_empty": "Извините, по вашему запросу ничего не найдено"
+}

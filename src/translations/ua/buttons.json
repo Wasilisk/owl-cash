@@ -1,0 +1,23 @@
+{
+  "login": "Ввійти",
+  "register": "Зареєструватись",
+  "submit": "Підтвердити",
+  "menu": {
+    "profile": "Профіль",
+    "transactions": "Транзакції",
+    "contacts": "Контакти",
+    "search": "Пошук",
+    "logout": "Вийти"
+  },
+  "new_transaction": "Нова Транзакція",
+  "paginate": {
+    "previous": "← Попередня",
+    "next": "Наступна →"
+  },
+  "send": "Відправити",
+  "update_profile": "Оновити профіль",
+  "update_password": "Оновити пароль",
+  "change_password": "Змінити пароль",
+  "cancel": "Скасувати",
+  "update": "Оновити"
+}

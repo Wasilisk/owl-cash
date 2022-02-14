@@ -2,7 +2,7 @@
 import ReactSelect from 'react-select';
 import styled from "styled-components";
 
-export const CustomSelect = styled(ReactSelect)`
+const CustomSelect = styled(ReactSelect)`
   & .Select__indicator .Select__dropdown-indicator {
     border-color: transparent transparent red;
   }
@@ -21,7 +21,7 @@ export const CustomSelect = styled(ReactSelect)`
     box-shadow: none;
   }
   
-  & .Select__single-value {
+  & .Select__single-value { 
     font-weight: normal;
     font-size: 18px;
     line-height: 24px;
@@ -50,3 +50,5 @@ export const CustomSelect = styled(ReactSelect)`
     color: white;
   }
 `
+
+export default CustomSelect;

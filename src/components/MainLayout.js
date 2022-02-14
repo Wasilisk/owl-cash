@@ -1,6 +1,9 @@
+/* node-modules */
 import React from 'react';
 import styled from "styled-components";
 import PropTypes from "prop-types";
+
+/* components */
 import SideBarMenu from "./Menu/SideBarMenu";
 
 const MainLayoutContainer = styled.div`
@@ -19,7 +22,7 @@ const MainLayout = ({children}) => {
 };
 
 MainLayout.propTypes = {
-    children: PropTypes.any
+    children: PropTypes.node
 }
 
 export default MainLayout;

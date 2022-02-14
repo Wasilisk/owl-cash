@@ -1,0 +1,10 @@
+{
+  "success_login": "You are successfully logged in",
+  "recovery_password": "You have received an email with instructions on how to change your password",
+  "password_updated": "Password changed successfully",
+  "contact_added": "User added to your contacts",
+  "contact_deleted": "The user has been removed from your contacts",
+  "profile_created": "Profile created successful",
+  "profile_updated": "Profile updated successful",
+  "amount_limit": "Not enough money"
+}

@@ -1,45 +1,37 @@
+/* node-modules */
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import {getProfiles} from "../store/actions/profileActions";
 import PropTypes from "prop-types";
+import {useForm} from "react-hook-form";
+import {useTranslation} from "react-i18next";
+
+/* components */
 import MainLayout from "../components/MainLayout";
 import Paginate from "../components/Paginate";
-import {CustomSelect} from "../components/CustomSelect";
-import {useForm} from "react-hook-form";
-import Flex from "../elements/Flex";
-import Paper from "../elements/Paper";
-import SearchInput from "../elements/SearchInput";
-import Profile from "../components/Profile";
+import Profile from "../components/Profiles/Profile";
 import Loading from "../components/Loading";
 import EmptyList from "../components/EmptyList";
+import SearchContainer from "../components/SearchContainer";
+
+/* elements */
+import Flex from "../elements/Flex";
+
+/* actions */
+import {getProfiles} from "../store/actions/profileActions";
 
 const SearchUsersPage = ({userId, isLoading, totalProfiles, userProfiles, getProfiles}) => {
-
     const [itemOffset, setItemOffset] = useState(0);
-    const itemsPerPage = 5;
-    const pageCount = Math.ceil(totalProfiles / itemsPerPage);
-    const searchOptions = [
-        {value: "email", label: "Email"},
-        {value: "firstName", label: "First Name"},
-        {value: "lastName", label: "Last Name"}
-
-    ]
-
+    const [valueState, setValueState] = useState("email");
+    const { t } = useTranslation("texts");
     const {register, handleSubmit, getValues} = useForm();
-    const onSubmit = data => {
-        getProfiles(userId, valueState, data.search_value, 0, itemsPerPage);
-    }
-
-    const [valueState, setValueState] = useState("email")
-
-    const handler = (event) => {
-        setValueState(event.value)
-    }
-
+    const itemsPerPage = 7;
     useEffect(() => {
         getProfiles(userId, valueState, getValues("search_value"), itemOffset, itemOffset + itemsPerPage)
-    }, [itemOffset])
+    }, [itemOffset]);
 
+    const onSubmit = ({search_value}) => {
+        getProfiles(userId, valueState, search_value, 0, itemsPerPage);
+    }
 
     const handlePageClick = (event) => {
         const newOffset = (event.selected * itemsPerPage) % totalProfiles;
@@ -49,35 +41,26 @@ const SearchUsersPage = ({userId, isLoading, totalProfiles, userProfiles, getPro
     return (
         <MainLayout>
             <Flex>
-                <Paper width="500px" padding="10px">
-                    <Flex direction="row">
-                        <SearchInput
-                            onSubmit={handleSubmit(onSubmit)}
-                            label="Write email" {...register("search_value")}
-                        />
-                        <CustomSelect
-                            defaultValue={{label: "Email", value: "email"}}
-                            classNamePrefix={'Select'}
-                            isSearchable={true}
-                            options={searchOptions}
-                            onChange={handler}
-                        />
-                    </Flex>
-                </Paper>
-                <Flex>
+                <SearchContainer
+                    onSubmit={handleSubmit(onSubmit)}
+                    setValue={setValueState}
+                    {...register("search_value")}
+                />
+                <Flex height="650px" justifyContent="flex-start">
                     {
                         isLoading
-                            ? <Loading width="500px"/>
+                            ? <Loading width="500px" height="445px"/>
                             : userProfiles.length === 0
-                                ? <EmptyList text="Нажаль за вашим запитом нічого не знайдено"/>
+                                ? <EmptyList text={t("search_empty")}/>
                                 : userProfiles.map(profile => <Profile key={profile.id} profileData={profile}/>)
                     }
                 </Flex>
                 {
-                    totalProfiles > 5
+                    totalProfiles > 8
                         ? <Paginate
-                            pageCount={pageCount}
+                            itemsPerPage={itemsPerPage}
                             onPageChange={handlePageClick}
+                            totalItems={totalProfiles}
                             pageRangeDisplayed={3}
                             marginPagesDisplayed={1}
                         />
@@ -89,11 +72,11 @@ const SearchUsersPage = ({userId, isLoading, totalProfiles, userProfiles, getPro
 };
 
 SearchUsersPage.propTypes = {
-    userId: PropTypes.string,
-    isLoading: PropTypes.bool,
+    userId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     totalProfiles: PropTypes.number,
-    userProfiles: PropTypes.array,
-    getProfiles: PropTypes.func,
+    userProfiles: PropTypes.array.isRequired,
+    getProfiles: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

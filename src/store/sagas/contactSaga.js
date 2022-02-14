@@ -1,6 +1,8 @@
-import {errorNotification, successNotification} from "../../helpers/notifications";
-import contactApi from "../../http/contactApi";
-import {put, takeEvery} from "redux-saga/effects";
+/* node-modules */
+import * as _ from "lodash";
+import {put, takeEvery, takeLatest} from "redux-saga/effects";
+
+/* actions */
 import {
     ADD_CONTACT,
     ADD_CONTACT_REQUEST,
@@ -11,9 +13,17 @@ import {
     GET_CONTACTS,
     SET_CONTACTS
 } from "../actions/contactActions";
-import profileApi from "../../http/profileApi";
-import * as _ from "lodash";
 import {PROFILE_ADD_TO_CONTACT} from "../actions/profileActions";
+
+/* http */
+import contactApi from "../../http/contactApi";
+import profileApi from "../../http/profileApi";
+
+/* localization */
+import i18n from '../../i18n';
+
+/* helpers */
+import {errorNotification, successNotification} from "../../helpers/notifications";
 
 function* createContact({owner, contact, setLoader}) {
     try {
@@ -23,7 +33,7 @@ function* createContact({owner, contact, setLoader}) {
             yield put({type: ADD_CONTACT, payload: contactData.data[0]});
             yield put({type: PROFILE_ADD_TO_CONTACT, payload: {profileId: contact}})
             setLoader(false);
-            successNotification("Користувача додано до ваших контактів")
+            successNotification(i18n.t("contact_added", {ns: "notifications"}))
         } else {
             throw contactData;
         }
@@ -40,7 +50,7 @@ function* deleteContact({contactId, setIsLoading}) {
         yield contactApi.deleteContact(contactId);
         yield put({type: DELETE_CONTACT, payload: contactId});
         setIsLoading(false);
-        successNotification("Користувача вилучено з ваших контактів")
+        successNotification(i18n.t("contact_deleted", {ns: "notifications"}))
     } catch (error) {
         yield put({type: CONTACT_ACTION_ERROR, error: error.data.msg});
         setIsLoading(false);
@@ -63,7 +73,7 @@ function* getContacts({userId, searchKey, searchValue, from, to}) {
                     {contact: _.find(profilesByValue.data, { user: contactInfo.contact })}
                 );
             });
-            console.log(contactsProfiles)
+
             if (contactById.status >= 200 && contactById.status < 300) {
                 yield put({type: SET_CONTACTS, payload: {
                         userContacts: contactsProfiles,
@@ -110,5 +120,5 @@ export function* deleteContactSaga() {
 }
 
 export function* getContactsSaga() {
-    yield takeEvery(GET_CONTACTS, getContacts);
+    yield takeLatest(GET_CONTACTS, getContacts);
 }

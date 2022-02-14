@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
+import './i18n';
 import App from './App';
 import GlobalStyle from "./globalStyle";
 import {BrowserRouter} from "react-router-dom";

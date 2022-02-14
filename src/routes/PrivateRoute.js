@@ -1,14 +1,16 @@
+/* node-modules */
 import React from 'react';
 import {connect} from "react-redux";
 import {Navigate, Outlet} from "react-router-dom";
 import PropTypes from "prop-types";
 
-const PrivateRoute = ({isAuth}) => {
-    return isAuth ? <Outlet /> : <Navigate to="/"/>;
+const PrivateRoute = ({isAuth, option = false}) => {
+    return isAuth && !option ? <Outlet /> : <Navigate to="/"/>;
 };
 
 PrivateRoute.propTypes = {
-    isAuth: PropTypes.bool
+    isAuth: PropTypes.bool,
+    option: PropTypes.bool
 }
 
 const mapStateToProps = (state) => {

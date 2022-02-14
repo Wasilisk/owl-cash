@@ -1,17 +1,19 @@
+/* node-modules */
 import React, {useState} from 'react';
-import Paginate from "../Paginate";
-import Flex from "../../elements/Flex";
 import PropTypes from "prop-types";
+
+/* components */
 import Transaction from "./Transaction";
 import Loading from "../Loading";
+import Paginate from "../Paginate";
 
+/* elements */
+import Flex from "../../elements/Flex";
 
 const TransactionsContainer = ({transactions, userId, isLoading}) => {
     const [itemOffset, setItemOffset] = useState(0);
 
     const itemsPerPage = 5;
-    const pageCount = Math.ceil(transactions.length / itemsPerPage);
-
     const currentPageData = transactions.slice(itemOffset, itemOffset + itemsPerPage)
 
     const handlePageClick = (event) => {
@@ -20,12 +22,12 @@ const TransactionsContainer = ({transactions, userId, isLoading}) => {
     };
 
     if(isLoading) {
-        return <Loading/>
+        return <Loading width="500px" height="400px"/>
     }
 
     return (
         <>
-            <Flex height="480px" justifyContent="flex-start">
+            <Flex height="450px" justifyContent="flex-start">
                 {currentPageData.map(transaction => {
                     if (transaction.from.user === transaction.to.user) {
                         return <Transaction key={transaction.id}
@@ -51,8 +53,11 @@ const TransactionsContainer = ({transactions, userId, isLoading}) => {
             {
                 transactions.length > 5
                     ? <Paginate
-                        pageCount={pageCount}
+                        totalItems={transactions.length}
+                        itemsPerPage={itemsPerPage}
                         onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={1}
                     />
                     : null
             }
@@ -61,9 +66,9 @@ const TransactionsContainer = ({transactions, userId, isLoading}) => {
 };
 
 TransactionsContainer.propTypes = {
-    transactions: PropTypes.any,
-    userId: PropTypes.string,
-    isLoading: PropTypes.bool
+    transactions: PropTypes.array,
+    userId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired
 }
 
 export default TransactionsContainer;

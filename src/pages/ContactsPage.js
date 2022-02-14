@@ -1,45 +1,42 @@
+/* node-modules */
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
+import {useForm} from "react-hook-form";
+import {useTranslation} from "react-i18next";
+
+/* components */
 import MainLayout from "../components/MainLayout";
 import Paginate from "../components/Paginate";
-import {CustomSelect} from "../components/CustomSelect";
-import {useForm} from "react-hook-form";
-import Flex from "../elements/Flex";
-import Paper from "../elements/Paper";
-import SearchInput from "../elements/SearchInput";
 import Loading from "../components/Loading";
-import {getContacts} from "../store/actions/contactActions";
-import Contact from "../components/Contact";
+import Contact from "../components/Contacts/Contact";
 import EmptyList from "../components/EmptyList";
+import SearchContainer from "../components/SearchContainer";
+
+/* elements */
+import Flex from "../elements/Flex";
+
+/* actions */
+import {getContacts} from "../store/actions/contactActions";
 
 const ContactsPage = ({userId, isLoading, totalContacts, userContacts, getContacts}) => {
     const [valueState, setValueState] = useState("email")
     const [itemOffset, setItemOffset] = useState(0);
+    const { t } = useTranslation("texts")
     const {register, handleSubmit, getValues} = useForm();
-    const onSubmit = data => {
-        getContacts(userId, valueState, data.search_value, 0, itemsPerPage);
-    }
-
-    const emptyListText = valueState && getValues("search_value") ? "Нажаль за вашим запитом нікого не знайдено" : "У вас немає жодних контактів";
-    const itemsPerPage = 5;
-    const pageCount = Math.ceil(totalContacts / itemsPerPage);
-    const searchOptions = [
-        {value: "email", label: "Email"},
-        {value: "firstName", label: "First Name"},
-        {value: "lastName", label: "Last Name"}
-
-    ]
-
-
-    const handler = (event) => {
-        setValueState(event.value)
-    }
 
     useEffect(() => {
         getContacts(userId, valueState, getValues("search_value"), itemOffset, itemOffset + itemsPerPage)
     }, [itemOffset])
 
+    const itemsPerPage = 7;
+    const emptyListText = valueState && getValues("search_value")
+        ? t("search_empty")
+        : t("contacts_empty");
+
+    const onSubmit = ({search_value}) => {
+        getContacts(userId, valueState, search_value, 0, itemsPerPage);
+    }
 
     const handlePageClick = (event) => {
         const newOffset = (event.selected * itemsPerPage) % totalContacts;
@@ -49,25 +46,15 @@ const ContactsPage = ({userId, isLoading, totalContacts, userContacts, getContac
     return (
         <MainLayout>
             <Flex>
-                <Paper width="500px" padding="10px">
-                    <Flex direction="row">
-                        <SearchInput
-                            onSubmit={handleSubmit(onSubmit)}
-                            {...register("search_value")}
-                        />
-                        <CustomSelect
-                            defaultValue={{label: "Email", value: "email"}}
-                            classNamePrefix={'Select'}
-                            isSearchable={true}
-                            options={searchOptions}
-                            onChange={handler}
-                        />
-                    </Flex>
-                </Paper>
-                <Flex>
+                <SearchContainer
+                    onSubmit={handleSubmit(onSubmit)}
+                    setValue={setValueState}
+                    {...register("search_value")}
+                />
+                <Flex height="650px" justifyContent="flex-start">
                     {
                         isLoading
-                            ? <Loading width="500px"/>
+                            ? <Loading width="500px" height="450px"/>
                             : userContacts.length === 0
                                 ? <EmptyList text={emptyListText}/>
                                 : userContacts.map(userContact => <Contact
@@ -77,9 +64,10 @@ const ContactsPage = ({userId, isLoading, totalContacts, userContacts, getContac
                     }
                 </Flex>
                 {
-                    totalContacts > 5
+                    totalContacts > 8
                         ? <Paginate
-                            pageCount={pageCount}
+                            itemsPerPage={itemsPerPage}
+                            totalItems={totalContacts}
                             onPageChange={handlePageClick}
                             pageRangeDisplayed={3}
                             marginPagesDisplayed={1}
@@ -92,11 +80,11 @@ const ContactsPage = ({userId, isLoading, totalContacts, userContacts, getContac
 };
 
 ContactsPage.propTypes = {
-    userId: PropTypes.string,
-    isLoading: PropTypes.bool,
+    userId: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     totalContacts: PropTypes.number,
-    userContacts: PropTypes.array,
-    getContacts: PropTypes.func,
+    userContacts: PropTypes.array.isRequired,
+    getContacts: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {

@@ -4,6 +4,7 @@ const Paper = styled.div`
   width: ${({width}) => width || "auto"};
   height: ${({height}) => height || "auto"};
   display: flex;
+  position: relative;
   flex-direction: ${({direction}) => direction || "column"};
   border-radius: 20px;
   padding: ${({padding}) => padding || "30px"};

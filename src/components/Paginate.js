@@ -2,6 +2,7 @@ import React from 'react';
 import ReactPaginate from "react-paginate";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
 
 const PaginateContainer = styled.div`
   width: 100%;
@@ -42,13 +43,15 @@ const PaginateContainer = styled.div`
   
 `
 
-const Paginate = ({pageCount, ...props}) => {
+const Paginate = ({totalItems, itemsPerPage, ...props}) => {
+    const { t } = useTranslation("buttons")
+    const pageCount = Math.ceil(totalItems / itemsPerPage);
 
     return (
             <PaginateContainer>
                 <ReactPaginate
-                    previousLabel={"← Previous"}
-                    nextLabel={"Next →"}
+                    previousLabel={t("paginate.previous")}
+                    nextLabel={t("paginate.next")}
                     pageCount={pageCount}
                     containerClassName={"pagination"}
                     previousLinkClassName={"pagination__link"}
@@ -62,7 +65,8 @@ const Paginate = ({pageCount, ...props}) => {
 };
 
 Paginate.propTypes = {
-    pageCount: PropTypes.number,
+    totalItems: PropTypes.number,
+    itemsPerPage: PropTypes.number.isRequired
 }
 
 export default Paginate;

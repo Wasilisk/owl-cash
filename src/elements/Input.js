@@ -75,8 +75,8 @@ const Input = React.forwardRef(({width, label, error, ...props}, ref) => {
 Input.displayName="Input"
 
 Input.propTypes= {
-    label: PropTypes.string,
-    error: PropTypes.string,
+    label: PropTypes.string.isRequired,
+    error: PropTypes.object,
     width: PropTypes.string
 }
 

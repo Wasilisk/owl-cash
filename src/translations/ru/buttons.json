@@ -1,0 +1,22 @@
+{
+  "login": "Войти",
+  "register": "Зарегистрироваться",
+  "submit": "Подтвердить",
+  "menu": {
+    "profile": "Профиль",
+    "transactions": "Транзакции",
+    "contacts": "Контакты",
+    "search": "Поиск",
+    "logout": "Выйти"
+  },
+  "new_transaction": "Новая Транзакция",
+  "paginate": {
+    "previous": "← Предыдущая",
+    "next": "Следующая →"
+  },
+  "send": "Отправить",
+  "update_profile": "Обновить профиль",
+  "change_password": "Изменить пароль",
+  "cancel": "Отмена",
+  "update": "Обновить"
+}

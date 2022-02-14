@@ -1,10 +1,16 @@
+/* node-modules */
 import React from 'react';
-import Paper from "../elements/Paper";
 import PropTypes from "prop-types";
-import Flex from "../elements/Flex";
-import owlImage from "../assets/images/owl2.png";
-import Image from "../elements/Image";
 import styled from "styled-components";
+import {useTranslation} from "react-i18next";
+
+/* elements */
+import Paper from "../elements/Paper";
+import Flex from "../elements/Flex";
+import Image from "../elements/Image";
+
+/* assets */
+import owlImage from "../assets/images/owl2.png";
 
 const AmountContainer = styled.div`
   display: flex;
@@ -25,9 +31,10 @@ const AmountContainer = styled.div`
 `
 
 const UserAmount = ({userAmount, isLoading}) => {
+    const { t } = useTranslation("texts")
 
     return (
-        <Paper height="200px" width="400px" margin="20px">
+        <Paper height="200px" width="400px" margin="10px 0px 5px 0px">
             <Flex direction="row" justifyContent="flex-start">
                 <Image
                     width="200px"
@@ -36,10 +43,10 @@ const UserAmount = ({userAmount, isLoading}) => {
                     alt="Image"
                 />
                 <AmountContainer>
-                    <p>Total amount</p>
+                    <p>{t("transaction_page.total_amount")}</p>
                     <h1>{
                         isLoading
-                            ? "Loading..."
+                            ? t("common.loading")
                             : `$${userAmount}`
                     }</h1>
                 </AmountContainer>
@@ -52,7 +59,7 @@ UserAmount.propTypes = {
     userAmount: PropTypes.number,
     userId: PropTypes.string,
     transactions: PropTypes.array,
-    isLoading: PropTypes.bool
+    isLoading: PropTypes.bool.isRequired
 }
 
 export default UserAmount;

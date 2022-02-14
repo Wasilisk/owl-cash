@@ -1,33 +1,43 @@
+/* node-modules */
 import React from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {useTranslation} from "react-i18next";
+
+/* components */
+import Languages from "../components/Languages";
+
+/* elements */
 import Flex from "../elements/Flex";
 import Paper from "../elements/Paper";
 import Header from "../elements/Header";
 import Form from "../elements/Form";
 import Input from "../elements/Input";
 import InputButton from "../elements/InputButton";
-import OwlIcon from "../assets/images/owl5.png"
-import {useLocation, useNavigate} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
 import Image from "../elements/Image";
-import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {updatePassword} from "../store/actions/authActions";
-import * as yup from "yup";
+import Typography from "../elements/Typography";
 
-const schema = yup.object({
-    password: yup.string().min(6, "Пароль мусить містити більше 6 символів").required(),
-}).required();
+/* assets */
+import OwlIcon from "../assets/images/owl5.png"
+
+/* actions */
+import {updatePassword} from "../store/actions/authActions";
+
+/* validation */
+import passwordSchema from "../validations/passwordValidation";
 
 const UpdatePasswordPage = ({isLoading, updatePassword}) => {
     const navigate = useNavigate();
     const {state} = useLocation();
-    console.log(state.hashValue)
-    const accessToken = state.hashValue.substring(1).split("&")[0].substring(13);
-    console.log(accessToken)
+    const { t } = useTranslation(["texts", "buttons", "labels"])
     const { register, handleSubmit, formState:{ errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(passwordSchema)
     });
+
+    const accessToken = state.hashValue.substring(1).split("&")[0].substring(13);
 
     const onSubmit = data => updatePassword(accessToken, data.password, {
         redirect: navigate,
@@ -38,12 +48,24 @@ const UpdatePasswordPage = ({isLoading, updatePassword}) => {
         <Flex>
             <Paper>
                 <Flex>
-                    <Header>Password Recovery</Header>
+                    <Header>{t("password_recovery.header")}</Header>
                     <Image width="300px" height="300px" src={OwlIcon}/>
+                    <Typography>{t("password_recovery.owl_phrase")}</Typography>
                     <Form onSubmit={handleSubmit(onSubmit)}>
-                        <Input type="password" label="New password" autoComplete="on" error={errors.password} {...register("password")}/>
-                        <InputButton isLoading={isLoading} type="submit" value="Update"/>
+                        <Input
+                            type="password"
+                            label={t("new_password", {ns: "labels"})}
+                            autoComplete="on"
+                            error={errors.password}
+                            {...register("password")}
+                        />
+                        <InputButton
+                            isLoading={isLoading}
+                            type="submit"
+                            value={t("update", {ns: "buttons"})}
+                        />
                     </Form>
+                    <Languages/>
                 </Flex>
             </Paper>
         </Flex>
@@ -51,8 +73,8 @@ const UpdatePasswordPage = ({isLoading, updatePassword}) => {
 };
 
 UpdatePasswordPage.propTypes = {
-    isLoading: PropTypes.bool,
-    updatePassword: PropTypes.func
+    isLoading: PropTypes.bool.isRequired,
+    updatePassword: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

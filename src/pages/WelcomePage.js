@@ -1,19 +1,26 @@
+/* node-modules */
 import React from 'react';
-import PropTypes from 'prop-types';
+import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+
+/* components */
+import Languages from "../components/Languages";
+
+/* elements */
 import Flex from "../elements/Flex";
 import Image from "../elements/Image";
-import owlImage from "../assets/images/owl1.png";
 import HeaderText from "../elements/Header";
 import Typography from "../elements/Typography";
 import Button from "../elements/Button";
 import Paper from "../elements/Paper";
-import {useNavigate} from "react-router-dom";
-import {connect} from "react-redux";
-import {getTransactions} from "../store/actions/transactionActions";
-import {getUserProfile} from "../store/actions/profileActions";
 
-const WelcomePage = (props) => {
+/* assets */
+import WelcomeOwl from "../assets/images/owl1.png";
+
+const WelcomePage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation("buttons")
+
     return (
         <Flex>
             <Paper height="400px" width="800px">
@@ -21,12 +28,12 @@ const WelcomePage = (props) => {
                     <Image
                         width="300px"
                         height="300px"
-                        src={owlImage}
+                        src={WelcomeOwl}
                         alt="Image"
                     />
                     <Flex width="600px">
                         <HeaderText>
-                            Ласкаво просимо
+                            Ласкаво просимо в OwlCash
                         </HeaderText>
                         <Typography>
                             fadssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssasdfasdffffffffffffffffffffffff
@@ -34,28 +41,17 @@ const WelcomePage = (props) => {
                             asdfasdfasdfasd
                             fasdfsdfasdfadfasdfasfsd
                         </Typography>
-                        <Button width="300px" onClick={() => navigate("/login")}>Login</Button>
-                        <Button width="300px" onClick={() => navigate("/registration")}>Register</Button>
-                        <Button width="300px" onClick={() => props.getUserProfile(props.userId)}>Get Profile</Button>
+                        <Button width="300px" onClick={() => navigate("/login")}>{t("login")}</Button>
+                        <Button width="300px" onClick={() => navigate("/registration")}>{t("register")}</Button>
                     </Flex>
+                </Flex>
+                <Flex>
+                    <Languages/>
                 </Flex>
             </Paper>
         </Flex>
     );
 };
 
-WelcomePage.propTypes = {
-    userId: PropTypes.string,
-    email: PropTypes.string,
-    getTransactions: PropTypes.func,
-    getUserProfile: PropTypes.func,
-}
 
-const mapStateToProps = (state) => {
-    return {
-        userId: state.auth.currentUser.id,
-        email: state.auth.currentUser.email,
-    }
-}
-
-export default connect(mapStateToProps, {getUserProfile, getTransactions})(WelcomePage);
+export default WelcomePage;

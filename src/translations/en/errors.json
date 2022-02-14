@@ -1,0 +1,6 @@
+{
+  "is_nan": "This must be a number",
+  "is_negative": "The amount cannot be negative",
+  "email_not_correct": "Invalid email format",
+  "password_length": "The password must contain more than 6 characters"
+}

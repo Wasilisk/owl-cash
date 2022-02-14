@@ -1,14 +1,24 @@
-import {call, put, takeEvery} from "redux-saga/effects";
-import {errorNotification, successNotification} from "../../helpers/notifications";
-import profileApi from "../../http/profileApi";
+/* node-modules */
+import {call, put, takeEvery, takeLatest} from "redux-saga/effects";
+import * as _ from "lodash";
+
+/* actions */
 import {
     CREATE_PROFILE, GET_PROFILES, GET_USER_PROFILE,
     PROFILE_ACTION_ERROR,
     PROFILE_ACTION_LOADING, SET_PROFILES,
     SET_USER_PROFILE, UPDATE_PROFILE
 } from "../actions/profileActions";
+
+/* http */
+import profileApi from "../../http/profileApi";
 import contactApi from "../../http/contactApi";
-import * as _ from "lodash";
+
+/* localization */
+import i18n from '../../i18n';
+
+/* helpers */
+import {errorNotification, successNotification} from "../../helpers/notifications";
 
 function* getUserProfile({userId}) {
     try {
@@ -30,7 +40,7 @@ function* createProfile({profilePayload, meta}) {
         const profileData = yield profileApi.createProfile(profilePayload);
         if (profileData.status >= 200 && profileData.status < 300) {
             yield put({type: SET_USER_PROFILE, payload: profileData.data[0]});
-            successNotification("Profile created successful");
+            successNotification(i18n.t("profile_created", {ns: "notifications"}));
             yield call(meta.redirect, meta.path);
         } else {
             throw profileData;
@@ -47,7 +57,7 @@ function* updateProfile({updateValues}) {
         const profileData = yield profileApi.updateProfile(updateValues);
         if (profileData.status >= 200 && profileData.status < 300) {
             yield put({type: SET_USER_PROFILE, payload: profileData.data[0]});
-            successNotification("Профіль створено успішно !")
+            successNotification(i18n.t("profile_updated", {ns: "notifications"}))
         } else {
             throw profileData;
         }
@@ -103,5 +113,5 @@ export function* updateProfileSaga() {
 }
 
 export function* getProfilesSaga() {
-    yield takeEvery(GET_PROFILES, getProfiles)
+    yield takeLatest(GET_PROFILES, getProfiles)
 }

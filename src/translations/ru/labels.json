@@ -1,0 +1,10 @@
+{
+  "email": "Е-мейл",
+  "password": "Пароль",
+  "firstName": "Имя",
+  "lastName": "Фамилия",
+  "select": "Выбрать...",
+  "transfer_amount": "Сума перевода",
+  "new_password": "Новый пароль",
+  "search": "Поиск..."
+}

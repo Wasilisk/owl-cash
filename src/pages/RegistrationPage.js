@@ -1,31 +1,39 @@
+/* node-modules */
 import React from 'react';
 import PropTypes from 'prop-types';
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {connect} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useTranslation} from "react-i18next";
+
+/* components */
+import Languages from "../components/Languages";
+
+/* elements */
 import Flex from "../elements/Flex";
 import Paper from "../elements/Paper";
 import Header from "../elements/Header";
 import Input from "../elements/Input";
 import Typography from "../elements/Typography";
-import CustomLink from "../elements/Link";
+import CustomLink from "../elements/CustomLink";
 import InputButton from "../elements/InputButton";
 import Form from "../elements/Form";
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import {connect} from "react-redux";
+
+/* validation */
+import {authSchema} from "../validations/authValidation";
+
+/* actions */
 import {userRegistration} from "../store/actions/authActions";
-import {useNavigate} from "react-router-dom";
 
-const schema = yup.object({
-    email: yup.string().email().required(),
-    password: yup.string().min(6, "Пароль мусить містити більше 8 символів").required(),
-}).required();
-
-const RegistrationPage = (props) => {
+const RegistrationPage = ({userRegistration}) => {
     const navigate = useNavigate();
+    const { t } = useTranslation(["buttons", "labels", "texts"])
     const { register, handleSubmit, formState:{ errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(authSchema)
     });
-    const onSubmit = data => props.userRegistration(data.email, data.password, {
+
+    const onSubmit = data => userRegistration(data.email, data.password, {
         redirect: navigate,
         path: "/create-profile"
     })
@@ -34,20 +42,31 @@ const RegistrationPage = (props) => {
         <Flex>
             <Paper>
                 <Flex>
-                    <Header>Registration</Header>
+                    <Header>{t("registration_form.header", { ns: 'texts' })}</Header>
                     <Form onSubmit={handleSubmit(onSubmit)}>
-                        <Input label="Email" error={errors.email} {...register("email")}/>
-                        <Input label="Password" error={errors.password} {...register("password")}/>
-                        <InputButton type="submit" value="Login"/>
+                        <Input
+                            label={t("email", { ns: 'labels' })}
+                            error={errors.email}
+                            {...register("email")}
+                        />
+                        <Input
+                            label={t("password", { ns: 'labels' })}
+                            error={errors.password}
+                            type="password"
+                            autoComplete="on"
+                            {...register("password")}
+                        />
+                        <InputButton width="220px" type="submit" value={t("register")}/>
                     </Form>
                     <Flex direction="row">
-                        <Typography fontSize="14px">
-                            Ви вже зареєстровані ?
+                        <Typography fontSize="14px" margin="10px 0px 0px 0px">
+                            {t("registration_form.already_registered", { ns: 'texts' })}
                         </Typography>
-                        <CustomLink to="/login">
-                            Увійти
+                        <CustomLink to="/login" margin="10px 0px 0px 10px">
+                            {t("registration_form.login", { ns: 'texts' })}
                         </CustomLink>
                     </Flex>
+                    <Languages/>
                 </Flex>
             </Paper>
         </Flex>
@@ -55,8 +74,8 @@ const RegistrationPage = (props) => {
 };
 
 RegistrationPage.propTypes = {
-    isLoading: PropTypes.bool,
-    userRegistration: PropTypes.func
+    isLoading: PropTypes.bool.isRequired,
+    userRegistration: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

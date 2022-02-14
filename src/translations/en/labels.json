@@ -1,0 +1,10 @@
+{
+  "email": "Email",
+  "password": "Password",
+  "firstName": "FirstName",
+  "lastName": "LastName",
+  "select": "Select...",
+  "transfer_amount": "Transfer amount",
+  "new_password": "New password",
+  "search": "Search..."
+}

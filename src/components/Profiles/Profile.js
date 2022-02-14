@@ -1,62 +1,22 @@
+/* node-modules */
 import React, {useState} from 'react';
-import Flex from "../elements/Flex";
-import Paper from "../elements/Paper";
-import styled from "styled-components"
-import {FaUser, FaUserCheck, FaUserPlus} from "react-icons/fa"
 import PropTypes from "prop-types";
-import Typography from "../elements/Typography";
-import {createContact} from "../store/actions/contactActions";
 import {connect} from "react-redux";
-import Loader from "../assets/loader/Loader";
+import {FaUser, FaUserCheck, FaUserPlus} from "react-icons/fa"
 
-const AvatarContainer = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  background-color: #556080;
-  border: 2px solid #3D4554;
+/* components */
+import Avatar from "../Avatar";
+import IconContainer from "../IconContainer";
+import Loader from "../Loader";
 
-  & > svg {
-    color: white;
-  }
-`
+/* elements */
+import Flex from "../../elements/Flex";
+import Paper from "../../elements/Paper";
+import Typography from "../../elements/Typography";
+import IconButton from "../../elements/IconButton";
 
-const UserInfo = styled.div`
-
-`
-
-const IconContainer = styled.div`
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & > svg {
-    height: 20px;
-    width: 20px;
-    color: #3CBF27;
-  }
-`
-
-const IconButton = styled.button`
-  all: unset;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  & > svg {
-    height: 20px;
-    width: 20px;
-    color: white;
-  }
-`
+/* actions */
+import {createContact} from "../../store/actions/contactActions";
 
 const Profile = ({userId, profileData, createContact}) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -65,18 +25,18 @@ const Profile = ({userId, profileData, createContact}) => {
         <Paper width="500px" padding="10px" margin="5px">
             <Flex direction="row">
                 <Flex direction="row" justifyContent="flex-start">
-                    <AvatarContainer>
+                    <Avatar>
                         <FaUser/>
-                    </AvatarContainer>
-                    <UserInfo>
+                    </Avatar>
+                    <div>
                         <Typography
                             margin="0px 0px 0px 10px">{profileData.firstName} {profileData.lastName}</Typography>
                         <Typography margin="0px 0px 0px 10px">{profileData.email}</Typography>
-                    </UserInfo>
+                    </div>
                 </Flex>
                 {
                     profileData.isUserContact
-                        ? <IconContainer>
+                        ? <IconContainer color="#3CBF27">
                             <FaUserCheck/>
                         </IconContainer>
                         : isLoading
@@ -91,9 +51,9 @@ const Profile = ({userId, profileData, createContact}) => {
 };
 
 Profile.propTypes = {
-    userId: PropTypes.string,
-    profileData: PropTypes.object,
-    createContact: PropTypes.func
+    userId: PropTypes.string.isRequired,
+    profileData: PropTypes.object.isRequired,
+    createContact: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

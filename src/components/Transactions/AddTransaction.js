@@ -1,42 +1,50 @@
+/* node-modules */
 import React, {useEffect, useState} from 'react';
-import Paper from "../../elements/Paper";
-import Typography from "../../elements/Typography";
-import {CustomSelect} from "../CustomSelect";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
-import {getContacts} from "../../store/actions/contactActions";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useTranslation} from "react-i18next";
+
+/* components */
+import TransactionStatus from "./TransactionStatus";
+import CloseModalButton from "../CloseModalButton";
+
+/* elements */
+import Paper from "../../elements/Paper";
+import Typography from "../../elements/Typography";
+import CustomSelect from "../../elements/CustomSelect";
 import Flex from "../../elements/Flex";
 import Form from "../../elements/Form";
 import Input from "../../elements/Input";
-import * as yup from "yup";
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import {createTransaction} from "../../store/actions/transactionActions";
-import {errorNotification} from "../../helpers/notifications";
 import InputButton from "../../elements/InputButton";
-import OwlIcon from "../../assets/images/owl7.png"
-import Image from "../../elements/Image";
-import TransactionSuccess from "./TransactionSuccess";
-import TransactionError from "./TransactionError";
 
-const schema = yup.object({
-    amount: yup.number().required().test(
-        'Is positive?',
-        'The number must be greater than 0!',
-        (value) => value > 0
-    )
-}).required();
+/* actions */
+import {getContacts} from "../../store/actions/contactActions";
+import {createTransaction} from "../../store/actions/transactionActions";
 
-const AddTransaction = ({userId, userAmount, contactData, userContacts, getContacts, createTransaction}) => {
+/* helpers */
+import {errorNotification} from "../../helpers/notifications";
+
+/* assets */
+import SuccessOwl from "../../assets/images/owl8.png";
+import LoadingOwl from "../../assets/images/owl7.png";
+import ErrorOwl from "../../assets/images/owl9.png";
+
+/* validation */
+import amountSchema from "../../validations/amountValidation";
+
+const AddTransaction = ({closeModal, userId, userAmount, contactData, userContacts, getContacts, createTransaction}) => {
     const [status, setStatus] = useState("");
     const [valueState, setValueState] = useState("")
     const [isLoading, setIsLoading] = useState(false)
+    const { t } = useTranslation(["texts", "labels", "buttons", "notifications"]);
     const {register, handleSubmit, formState: {errors}} = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(amountSchema)
     });
     const onSubmit = data => {
         if (data.amount > userAmount) {
-            errorNotification("Перевищено ліміт")
+            errorNotification(t("amount_limit", {ns: "notifications"}))
         } else {
             createTransaction({
                 from: userId,
@@ -57,38 +65,50 @@ const AddTransaction = ({userId, userAmount, contactData, userContacts, getConta
 
     if (isLoading) {
         return (
-            <Paper width="400px" height="350px">
-                <Flex>
-                    <Image src={OwlIcon} width="300px" height="300px"/>
-                    <Typography>Відправлення транзакції...</Typography>
-                </Flex>
-            </Paper>
+            <TransactionStatus
+                src={LoadingOwl}
+                text={t("transaction_page.status.loading")}
+            />
         )
     }
 
     if(status === "success") {
-        return <TransactionSuccess/>
+        return <TransactionStatus
+            closeModal={closeModal}
+            src={SuccessOwl}
+            color="#3CBF27"
+            text={t("transaction_page.status.success")}
+        />
     } else if (status === "error") {
-        return <TransactionError/>
+        return <TransactionStatus
+            closeModal={closeModal}
+            src={ErrorOwl}
+            color="#D93855"
+            text={t("transaction_page.status.error")}
+        />
     }
 
 
     return (
-        <Paper width="400px" height="350px">
-            <Typography>
-                New Transaction
-            </Typography>
+        <Paper width="400px" height="280px">
+            <CloseModalButton closeModal={closeModal}/>
+            <Flex height="80px">
+                <Typography margin="0px 0px 30px 0px" color="white" fontSize="20px">
+                    {t("transaction_page.header")}
+                </Typography>
+            </Flex>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <Flex direction="row" justifyContent="space-between">
                     <Typography>
-                        Recipient
+                        {t("transaction_page.recipient")}
                     </Typography>
                     {
                         contactData
-                            ? <Typography>
+                            ? <Typography color="#F4C038">
                                 {contactData.firstName} {contactData.lastName}
                             </Typography>
                             : <CustomSelect
+                                placeholder={t("select", {ns: "labels"})}
                                 width="250px"
                                 classNamePrefix={'Select'}
                                 isSearchable={true}
@@ -98,26 +118,29 @@ const AddTransaction = ({userId, userAmount, contactData, userContacts, getConta
                     }
                 </Flex>
                 <Flex direction="row" justifyContent="space-between">
-                    <Typography>Amount: </Typography>
-                    <Input width="250px" type="text" label="Amount" error={errors.amount} {...register("amount")}/>
+                    <Typography>{t("transaction_page.amount")}</Typography>
+                    <Input width="250px" height="40px" type="text" label={t("transfer_amount", {ns: "labels"})} error={errors.amount} {...register("amount")}/>
                 </Flex>
                 <Flex direction="row" justifyContent="space-between">
-                    <Typography>On your account:</Typography>
-                    <Typography>{userAmount}$</Typography>
+                    <Typography>{t("transaction_page.on_your_account")}</Typography>
+                    <Typography color="#F4C038">{userAmount}$</Typography>
                 </Flex>
-                <InputButton type="submit" value="Create"/>
+                <Flex>
+                    <InputButton margin="30px" type="submit" value={t("send", {ns: "buttons"})}/>
+                </Flex>
             </Form>
         </Paper>
     );
 };
 
 AddTransaction.propTypes = {
-    userId: PropTypes.string,
+    closeModal: PropTypes.func.isRequired,
+    userId: PropTypes.string.isRequired,
     userAmount: PropTypes.number,
     contactData: PropTypes.object,
-    userContacts: PropTypes.array,
-    getContacts: PropTypes.func,
-    createTransaction: PropTypes.func
+    userContacts: PropTypes.array.isRequired,
+    getContacts: PropTypes.func.isRequired,
+    createTransaction: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

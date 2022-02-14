@@ -1,40 +1,16 @@
+/* node-modules */
 import React from 'react';
-import Paper from "../../elements/Paper";
-import Flex from "../../elements/Flex";
-import PropTypes from "prop-types";
-import {FaCheck, FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa"
 import styled from "styled-components";
 import moment from 'moment';
+import PropTypes from "prop-types";
+import {FaCheck, FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa"
 
-const handleColorType = transferType => {
-    switch (transferType) {
-        case "initial":
-            return "rgba(244, 117, 35, 1)";
-        case "incoming":
-            return "rgba(60, 191, 39, 1)";
-        default:
-            return "rgba(217, 56, 85, 1)";
-    }
-};
+/* components */
+import IconContainer from "../IconContainer";
 
-
-const IconContainer = styled.div`
-  min-width: 50px;
-  min-height: 50px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-  margin-left: 20px;
-  background-color: ${({ transferType }) => handleColorType(transferType)};
-
-  & > svg {
-    width: 20px;
-    height: 20px;
-    color: white;
-  }
-`
+/* elements */
+import Paper from "../../elements/Paper";
+import Flex from "../../elements/Flex";
 
 const TransactionInfo = styled.div`
   & > h4, h5 {
@@ -57,10 +33,15 @@ const AmountNumber = styled.h4`
 const Transaction = ({transaction, transferType, userData}) => {
 
     return (
-        <Paper width="500px" padding="10px" margin="5px">
+        <Paper width="500px" height="56px" padding="10px" margin="5px">
             <Flex direction="row" >
                 <Flex direction="row" justifyContent="flex-start">
-                    <IconContainer transferType={transferType}>
+                    <IconContainer
+                        height="40px"
+                        width="40px"
+                        margin="0px 10px 0px 10px"
+                        transferType={transferType}
+                    >
                         {
                             {
                                 'initial': <FaCheck/>,
@@ -83,9 +64,9 @@ const Transaction = ({transaction, transferType, userData}) => {
 };
 
 Transaction.propTypes = {
-    transaction: PropTypes.object,
-    transferType: PropTypes.string,
-    userData: PropTypes.object
+    transaction: PropTypes.object.isRequired,
+    transferType: PropTypes.string.isRequired,
+    userData: PropTypes.object.isRequired
 }
 
 export default Transaction;

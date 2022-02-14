@@ -31,6 +31,8 @@ export default function authReducer(state = initialState, action) {
                     id: action.payload.id,
                     email: action.payload.email
                 },
+                isAuth: true,
+                isProfileCreated: false,
                 isLoading: false
             }
         }
@@ -42,6 +44,7 @@ export default function authReducer(state = initialState, action) {
                     email: action.payload.email
                 },
                 isLoading: false,
+                isProfileCreated: true,
                 isAuth: true,
             }
         }

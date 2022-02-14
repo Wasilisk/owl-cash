@@ -1,6 +1,8 @@
+/* node-module */
 import {call, put, takeEvery} from "redux-saga/effects";
-import {errorNotification} from "../../helpers/notifications";
 import * as _ from 'lodash';
+
+/* actions */
 import transactionApi from "../../http/transactionApi";
 import {
     TRANSACTION_ACTION_LOADING,
@@ -9,7 +11,13 @@ import {
     SET_TRANSACTIONS,
     TRANSACTION_ACTION_ERROR
 } from "../actions/transactionActions";
+
+/* http */
 import profileApi from "../../http/profileApi";
+
+/* helpers */
+import {errorNotification} from "../../helpers/notifications";
+import {calculateUserAmount} from "../../helpers/common/calculateUserAmount";
 
 function* createTransaction({transactionPayload, setLoader, setStatus}) {
     try {
@@ -63,15 +71,7 @@ function* getTranslations({userId}) {
             );
         }).reverse();
 
-        const userAmount = transactionData.reduce((amountValue, currentValue) => {
-            if (currentValue.from.user === currentValue.to.user) {
-                return amountValue + currentValue.amount
-            } else if (currentValue.from.user === userId) {
-                return amountValue - currentValue.amount;
-            } else {
-                return amountValue + currentValue.amount
-            }
-        }, 0)
+        const userAmount = calculateUserAmount(transactionData, userId);
 
         if ((incomingTransactions.status >= 200 && incomingTransactions.status < 300)
             && (outgoingTransactions.status >= 200 && outgoingTransactions.status < 300)) {

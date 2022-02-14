@@ -1,7 +1,10 @@
+/* node_modules */
+import React from "react";
 import styled from "styled-components";
 import PropTypes from 'prop-types';
-import React from "react";
 import {FaSearch} from "react-icons/fa"
+
+/* components */
 import Form from "./Form";
 
 const InputContainer = styled.div`
@@ -71,7 +74,7 @@ const SearchInput = React.forwardRef(({onSubmit, ...props}, ref) => {
 SearchInput.displayName = "SearchInput"
 
 SearchInput.propTypes = {
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func.isRequired
 }
 
 export default SearchInput;

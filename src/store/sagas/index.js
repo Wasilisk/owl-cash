@@ -1,13 +1,28 @@
+/* node-modules */
 import { all } from 'redux-saga/effects'
-import {loginSaga, passwordRecoveryData, registrationSaga, updatePasswordSaga} from "./authSaga";
+
+/* sagas */
+import {
+    loginSaga,
+    passwordRecoveryData,
+    registrationSaga,
+    updatePasswordSaga
+} from "./authSaga";
 import {
     createProfileSaga,
     getProfilesSaga,
     getUserProfileSaga,
     updateProfileSaga
 } from "./profileSaga";
-import {createContactSaga, deleteContactSaga, getContactsSaga} from "./contactSaga";
-import {createTransactionSaga, getTransactionsSaga} from "./transactionSaga";
+import {
+    createContactSaga,
+    deleteContactSaga,
+    getContactsSaga
+} from "./contactSaga";
+import {
+    createTransactionSaga,
+    getTransactionsSaga
+} from "./transactionSaga";
 
 export default function* rootSaga() {
     yield all([

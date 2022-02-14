@@ -8,7 +8,7 @@ const InputButton = styled.input`
   padding: 14px 24px;
   width: ${({width}) => width || "180px"};
   height: ${({height}) => height || "48px"};
-  margin: 5px;
+  margin: ${({margin}) => margin || "5px"};
   background: ${({color}) => color || "#F4C038"};
   border-radius: 48px;
   border: none;

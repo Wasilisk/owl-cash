@@ -1,72 +1,45 @@
-import React, {useState} from 'react';
-import Flex from "../elements/Flex";
-import Paper from "../elements/Paper";
-import styled from "styled-components"
+/* node-modules */
+import React, {useEffect, useState} from 'react';
 import {FaUser, FaUserMinus} from "react-icons/fa"
-import {RiMoneyDollarCircleFill} from "react-icons/ri"
 import PropTypes from "prop-types";
-import Typography from "../elements/Typography";
-import {deleteContact} from "../store/actions/contactActions";
 import {connect} from "react-redux";
-import AddTransaction from "./Transactions/AddTransaction";
-import Modal from "styled-react-modal";
-import Loader from "../assets/loader/Loader";
+import {RiMoneyDollarCircleFill} from "react-icons/ri"
 
-const StyledModal = Modal.styled`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+/* components */
+import AddTransaction from "../Transactions/AddTransaction";
+import Loader from "../Loader";
+import Avatar from "../Avatar";
 
-const AvatarContainer = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  background-color: #556080;
-  border: 2px solid #3D4554;
+/* elements */
+import Flex from "../../elements/Flex";
+import Paper from "../../elements/Paper";
+import Typography from "../../elements/Typography";
+import StyledModal from "../../elements/StyledModal";
+import IconButton from "../../elements/IconButton";
 
-  & > svg {
-    color: white;
-  }
-`
-
-const IconButton = styled.button`
-  all: unset;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-  cursor: pointer;
-
-  & > svg {
-    height: 20px;
-    width: 20px;
-    color: ${({color}) => color || "white"};
-  }
-`
+/* actions */
+import {deleteContact} from "../../store/actions/contactActions";
 
 const Contact = ({contactData, deleteContact}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
+    useEffect(()=> {
+        return () => setIsLoading(false)
+    },[])
+
     const toggleModal = () => {
         setIsOpen(!isOpen)
     }
-
 
     return (
         <>
             <Paper width="500px" padding="10px" margin="5px">
                 <Flex direction="row">
                     <Flex direction="row" justifyContent="flex-start">
-                        <AvatarContainer>
+                        <Avatar>
                             <FaUser/>
-                        </AvatarContainer>
+                        </Avatar>
                         <div>
                             <Typography
                                 margin="0px 0px 0px 10px">{contactData.contact.firstName} {contactData.contact.lastName}</Typography>
@@ -90,15 +63,15 @@ const Contact = ({contactData, deleteContact}) => {
                 onBackgroundClick={toggleModal}
                 onEscapeKeydown={toggleModal}
             >
-                <AddTransaction contactData={contactData.contact}/>
+                <AddTransaction closeModal={toggleModal} contactData={contactData.contact}/>
             </StyledModal>
         </>
     );
 };
 
 Contact.propTypes = {
-    contactData: PropTypes.object,
-    deleteContact: PropTypes.func,
+    contactData: PropTypes.object.isRequired,
+    deleteContact: PropTypes.func.isRequired,
     toggleModal: PropTypes.func
 }
 

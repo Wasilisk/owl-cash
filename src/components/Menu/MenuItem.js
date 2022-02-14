@@ -47,9 +47,9 @@ const MenuItem = ({label, icon, to}) => {
 };
 
 MenuItem.propTypes = {
-    label: PropTypes.string,
-    icon: PropTypes.node,
-    to: PropTypes.string
+    label: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
+    to: PropTypes.string.isRequired
 }
 
 export default MenuItem;

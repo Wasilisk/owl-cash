@@ -1,0 +1,22 @@
+{
+  "login": "Login",
+  "register": "Register",
+  "submit": "Submit",
+  "menu": {
+    "profile": "Profile",
+    "transactions": "Transactions",
+    "contacts": "Contacts",
+    "search": "Search",
+    "logout": "Logout"
+  },
+  "new_transaction": "New Transaction",
+  "paginate": {
+    "previous": "← Previous",
+    "next": "Next →"
+  },
+  "send": "Send",
+  "update_profile": "Update profile",
+  "change_password": "Change password",
+  "cancel": "Cancel",
+  "update": "Update"
+}

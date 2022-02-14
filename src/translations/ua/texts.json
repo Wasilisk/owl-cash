@@ -1,0 +1,39 @@
+{
+  "common": {
+    "loading": "Загрузка..."
+  },
+  "login_form": {
+    "header": "Логін",
+    "not_registered": "Ще не зареєстровані ?",
+    "register": "Зареєструватись"
+  },
+  "registration_form": {
+    "header": "Реєстрація",
+    "already_registered": "Вже зареєстровані ?",
+    "login": "Увійти"
+  },
+  "create_profile": {
+    "header": "Створіть Профіль"
+  },
+  "transaction_page": {
+    "header": "Нова Транзакція",
+    "total_amount": "Ваш баланс",
+    "recipient": "Отримувач:",
+    "amount": "Сума:",
+    "on_your_account": "На вашому рахунку:",
+    "status": {
+      "loading": "Відправлення транзакції...",
+      "success": "Транзакція пройшла успішно",
+      "error": "Під час транзакції відбулась помилка"
+    }
+  },
+  "profile_page": {
+    "header": "Ваш профіль"
+  },
+  "password_recovery": {
+    "header": "Відновлення паролю",
+    "owl_phrase": "- Не забувайте свій пароль, благаю..."
+  },
+  "contacts_empty": "У вас немає жодних контактів",
+  "search_empty": "Нажаль за вашим запитом нічого не знайдено"
+}

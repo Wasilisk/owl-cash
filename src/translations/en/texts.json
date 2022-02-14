@@ -1,0 +1,39 @@
+{
+  "common": {
+    "loading": "Loading..."
+  },
+  "login_form": {
+    "header": "Login",
+    "not_registered": "Not registered yet ?",
+    "register": "Register"
+  },
+  "registration_form": {
+    "header": "Registration",
+    "already_registered": "Already registered ?",
+    "login": "Login"
+  },
+  "create_profile": {
+    "header": "Create Profile"
+  },
+  "transaction_page": {
+    "header": "New Transaction",
+    "total_amount": "Total amount",
+    "recipient": "Recipient:",
+    "amount": "Amount:",
+    "on_your_account": "On your account:",
+    "status": {
+      "loading": "Sending transaction ...",
+      "success": "The transaction was successful",
+      "error": "An error occurred during the transaction"
+    }
+  },
+  "profile_page": {
+    "header": "Your profile"
+  },
+  "password_recovery": {
+    "header": "Password Recovery",
+    "owl_phrase": "- Don't forget your password, please..."
+  },
+  "contacts_empty": "You have no contacts",
+  "search_empty": "Sorry, nothing was found for your query"
+}
