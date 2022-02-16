@@ -2,6 +2,9 @@
   "common": {
     "loading": "Загрузка..."
   },
+  "welcome_page": {
+    "header": "Ласкаво просимо в OwlCash"
+  },
   "login_form": {
     "header": "Логін",
     "not_registered": "Ще не зареєстровані ?",

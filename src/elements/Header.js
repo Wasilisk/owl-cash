@@ -9,6 +9,7 @@ const Header = styled.h1`
   margin: 20px 0 20px 0;
   overflow-wrap: anywhere;
   color: #FFFFFF;
+  text-align: center;
 `
 
 export default Header;

@@ -2,6 +2,9 @@
   "common": {
     "loading": "Loading..."
   },
+  "welcome_page": {
+    "header": "Welcome to OwlCash"
+  },
   "login_form": {
     "header": "Login",
     "not_registered": "Not registered yet ?",
